@@ -4,7 +4,9 @@ import React, { useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import { NavbarContainer } from "./NavbarContainer.styled";
-import LoginModal from "../login/LoginModal";
+import LoginForm from "../login/LoginForm";
+import SignUp from "../signup/SignUp";
+import ModalContainer from "../ModalContainer";
 
 function NavBar() {
   const [showModal, setShowModal] = useState(false);
@@ -48,7 +50,7 @@ function NavBar() {
           </Container>
       </NavbarContainer>
 
-      <LoginModal show={showModal} handleClose={handleCloseModal} />
+      <ModalContainer show={showModal} handleClose={handleCloseModal} />
       </>
   )
 }
