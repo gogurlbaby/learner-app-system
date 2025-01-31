@@ -4,10 +4,8 @@ import React, { useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import { NavbarContainer } from "./NavbarContainer.styled";
-import LoginForm from "../login/LoginForm";
-import SignUp from "../signup/SignUp";
 import ModalContainer from "../modal/ModalContainer";
-
+import styled from "styled-components";
 function NavBar() {
   const [showModal, setShowModal] = useState(false);
 
@@ -36,14 +34,16 @@ function NavBar() {
                   <Nav.Link href="/" className="menu-links">Home</Nav.Link>
                   <Nav.Link href="" className="menu-links">Courses</Nav.Link>
                   </div>
-                  <Nav.Link 
+                 <Nav.Link className="btn">
+                 {/* <NavButton 
                    href="" 
                    className="btn"
                    onClick={handleShowModal}
-                  >
+                  > */}
                     Login 
                      <FiLogIn />
-                  </Nav.Link>
+                  {/* </NavButton> */}
+                 </Nav.Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
@@ -56,3 +56,24 @@ function NavBar() {
 }
 
 export default NavBar
+
+const NavButton = styled.button`
+  padding: 0.75rem 1rem !important;
+  color: #01589A !important;
+  background-color: #fff !important;
+  border: 1px solid #01589A !important;
+  border-radius: 5px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+
+  &:hover {
+    background-color: #01589A !important;
+    color: #fff !important;
+  }
+  @media (max-width: 768px) {
+    justify-content: center !important; 
+    padding: 0.5rem 0.75rem !important;
+    margin-top: 1rem !important;
+  }
+`;

@@ -25,18 +25,17 @@ export const NavbarContainer = styled(Navbar)`
 }
 }
 .btn {
-  color: #01589A;
-  background-color: #fff;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid #01589A;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  color: #01589A !important;
+  background-color: #fff !important;
+  border: 1px solid #01589A !important;
+  border-radius: 5px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
 
   &:hover {
-    background-color: #01589A;
-    color: #fff;
+    background-color: #01589A !important;
+    color: #fff ;
   }
 }
 `;
