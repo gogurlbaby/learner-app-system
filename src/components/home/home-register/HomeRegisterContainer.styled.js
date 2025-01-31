@@ -1,8 +1,22 @@
 import styled from "styled-components";
 
 export const HomeRegisterContainer = styled.div`
- background-color: #fff;
- padding: 6.25rem 2rem 5.375rem;
+   background-color: #fff;
+   padding: 6.25rem 1rem 5.375rem;
+
+ @media (min-width: 1200px) {
+   padding: 3rem 12.5rem 3.75rem;
+ }
+ .register-container{
+    display: flex;
+    flex-direction: column;
+
+@media (min-width: 1200px) {
+     flex-direction: row;
+     align-items: center;
+     gap: 7rem;
+   }
+ }
  .icon {
     color: #177DDC;
  }
@@ -12,6 +26,13 @@ export const HomeRegisterContainer = styled.div`
     height: 5rem;  
     position: relative;
     left: 1.2rem;
+ @media (min-width: 768px) {
+     height: 3rem; 
+    }
+
+@media (min-width: 1200px) {
+     height: 7rem; 
+    } 
  }
  .text-icon-container {
     display: flex;

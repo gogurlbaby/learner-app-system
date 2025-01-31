@@ -5,6 +5,7 @@ export const ButtonContainer = styled.div`
   button{
     background-color: #01589A;
     color: #fff;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,9 +16,13 @@ export const ButtonContainer = styled.div`
     font-family: "Inter", serif;
     border: 1px solid #01589A;
     border-radius: 5px;
-
+    
+  &:hover{
+    background-color: #014273;
+    border: 1px solid #014273;
+  }   
     @media (max-width: 768px) {
-       width: 100%;
+       
     }
   }
 `;

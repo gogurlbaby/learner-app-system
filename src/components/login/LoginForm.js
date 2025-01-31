@@ -11,7 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-   const [otp, setOtp] = useState("");
+  //  const [otp, setOtp] = useState("");
    const navigate = useNavigate();
 
   const loginFormSchema = Yup.object().shape({
@@ -33,13 +33,13 @@ function Login() {
        {({ errors, touched, values, handleChange }) => (
         <Form>
           <div>
-          <OtpInput
+          {/* <OtpInput
            value={otp}
            onChange={setOtp}
            numInputs={6}
            renderSeparator={<span>-</span>}
            renderInput={(props) => <input {...props} />}
-          />
+          /> */}
 
           <GoogleLogin 
             onSuccess={credentialResponse => {
@@ -51,9 +51,10 @@ function Login() {
               console.log("Login Failed");
             }}
           />
+            <p className="or">or</p>
           </div>
-          <div>
-            <MdOutlineEmail />
+          <div className="input-container">
+            <MdOutlineEmail size={25} className="input-icon" />
             <Field
              type="email"
              name="email"
@@ -63,12 +64,12 @@ function Login() {
              onChange={handleChange}
              className="input"
             /> 
-              {errors.email && touched.email && (
+           </div>
+           {errors.email && touched.email && (
                 <span className="error">{errors.email}</span>
               )}
-           </div>
-           <div>
-             <MdOutlineLock />
+           <div className="input-container">
+             <MdOutlineLock size={25} className="input-icon" />
              <Field
               type="password"
               name="password"
@@ -78,12 +79,12 @@ function Login() {
               onChange={handleChange}
               className="input"
              /> 
-              {errors.password && touched.password && (
+            </div>
+            {errors.password && touched.password && (
                 <span className="error">{errors.password}</span>
               )}
-            </div>
-            <div>
-              <a href="">Forgot password ?</a>
+            <div className="forgot-container">
+              <a href="" className="forgot">Forgot password ?</a>
              </div>
             <Button type="submit" Text="Login" Icon={<MdKeyboardArrowRight size={25} />} />
         </Form>

@@ -6,7 +6,7 @@ import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import { NavbarContainer } from "./NavbarContainer.styled";
 import LoginForm from "../login/LoginForm";
 import SignUp from "../signup/SignUp";
-import ModalContainer from "../ModalContainer";
+import ModalContainer from "../modal/ModalContainer";
 
 function NavBar() {
   const [showModal, setShowModal] = useState(false);

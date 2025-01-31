@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { SignUpContainer } from "./SignUpContainer.styled";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { MdKeyboardArrowRight, MdOutlineEmail } from "react-icons/md";
@@ -9,9 +8,10 @@ import { GoogleLogin } from "@react-oauth/google";
 import OtpInput from "react-otp-input";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { LoginFormContainer } from "../login/LoginFormContainer.styled";
 
-function SignUp({show, handleClose}) {
-    const [otp, setOtp] = useState("");
+function SignUp() {
+    // const [otp, setOtp] = useState("");
     const navigate = useNavigate();
 
   const signUpSchema = Yup.object().shape({
@@ -23,7 +23,7 @@ function SignUp({show, handleClose}) {
       });
 
   return (
-    <SignUpContainer>
+    <LoginFormContainer>
       <Formik
        initialValues={{ email: "", password: "", confirmPassword: "" }}
        validationSchema={signUpSchema}
@@ -34,13 +34,13 @@ function SignUp({show, handleClose}) {
          {({ errors, touched, values, handleChange }) => (
         <Form>
           <div>
-            <OtpInput
+            {/* <OtpInput
              value={otp}
              onChange={setOtp}
              numInputs={6}
              renderSeparator={<span>-</span>}
              renderInput={(props) => <input {...props} />}
-           />
+           /> */}
             <GoogleLogin 
              onSuccess={credentialResponse => {
               console.log(credentialResponse);
@@ -51,9 +51,10 @@ function SignUp({show, handleClose}) {
               console.log("SignUp Failed");   
             }}
            />
+             <p className="or">or</p>
             </div>
-             <div>
-               <MdOutlineEmail />
+             <div className="input-container">
+               <MdOutlineEmail size={25} className="input-icon" />
                <Field
                 type="email"
                 name="email"
@@ -63,12 +64,12 @@ function SignUp({show, handleClose}) {
                 onChange={handleChange}
                 className="input"
                /> 
-                {errors.email && touched.email && (
+             </div>
+             {errors.email && touched.email && (
                 <span className="error">{errors.email}</span>
                 )}
-             </div>
-             <div>
-              <MdOutlineLock />
+             <div className="input-container">
+              <MdOutlineLock size={25} className="input-icon" />
               <Field
                type="password"
                name="password"
@@ -78,12 +79,12 @@ function SignUp({show, handleClose}) {
                onChange={handleChange}
                className="input"
               /> 
-               {errors.password && touched.password && (
+             </div>
+             {errors.password && touched.password && (
                 <span className="error">{errors.password}</span>
                )}
-             </div>
-             <div>
-              <MdOutlineLock />
+             <div className="input-container">
+              <MdOutlineLock size={25} className="input-icon" />
               <Field
                type="password"
                name="confirmPassword"
@@ -93,18 +94,18 @@ function SignUp({show, handleClose}) {
                onChange={handleChange}
                className="input"
               /> 
-               {errors.confirmPassword && touched.confirmPassword && (
+             </div>
+             {errors.confirmPassword && touched.confirmPassword && (
                 <span className="error">{errors.confirmPassword}</span>
                )}
-             </div>
-             <div>
-                <a href="">Forgot password ?</a>
+             <div className="forgot-container">
+                <a href="" className="forgot">Forgot password ?</a>
              </div>
              <Button type="submit" Text="Register" Icon={<MdKeyboardArrowRight size={25} />} />
           </Form>
          )}
         </Formik>
-    </SignUpContainer>
+    </LoginFormContainer>
   )
 }
 

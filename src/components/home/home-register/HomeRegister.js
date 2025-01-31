@@ -3,7 +3,7 @@
 import React from "react";
 import { BsFillRecordCircleFill } from "react-icons/bs";
 import { HomeRegisterContainer } from "./HomeRegisterContainer.styled";
-import HomeRegisterationForm from "../../home_registration_form/HomeRegisterationForm";
+import HomeRegisterationForm from "./HomeRegisterationForm";
 
 
 function HomeRegister() {
@@ -36,7 +36,6 @@ function HomeRegister() {
               </div>
             </div>
           </div>
-            <h2 className="register-title">Register</h2>
             <HomeRegisterationForm />       
         </div>
     </HomeRegisterContainer>
