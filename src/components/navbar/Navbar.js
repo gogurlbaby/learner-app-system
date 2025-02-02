@@ -34,15 +34,13 @@ function NavBar() {
                   <Nav.Link href="/" className="menu-links">Home</Nav.Link>
                   <Nav.Link href="" className="menu-links">Courses</Nav.Link>
                   </div>
-                 <Nav.Link className="btn">
-                 {/* <NavButton 
-                   href="" 
-                   className="btn"
-                   onClick={handleShowModal}
-                  > */}
+                 <Nav.Link 
+                  className="btn" 
+                  onClick={handleShowModal}
+                 >
                     Login 
                      <FiLogIn />
-                  {/* </NavButton> */}
+        
                  </Nav.Link>
                 </Nav>
               </Offcanvas.Body>

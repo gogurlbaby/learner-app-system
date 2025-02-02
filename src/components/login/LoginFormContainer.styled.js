@@ -17,7 +17,7 @@ export const LoginFormContainer = styled.div`
   background: inherit;
   border: none;
   outline: none;
-  color:  #999999;
+  color:  #000;
   font-size: 1rem;
   font-weight: 400;
   font-family: "Inter", serif;

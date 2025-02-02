@@ -8,9 +8,6 @@ export const FooterContainer = styled.footer`
   }
  .footer-section {
     
-a {
-   text-decoration: none;
- }
 @media (min-width: 1200px) {
     display: flex;
     align-items: center;
@@ -49,6 +46,7 @@ a {
  .footer-menu-list,
  .number,
  .address {
+    text-decoration: none;
     color: #fff;
     font-size: 1rem;
     font-weight: 400;

@@ -8,7 +8,7 @@ import HomeRegisterationForm from "./HomeRegisterationForm";
 
 function HomeRegister() {
   return (
-    <HomeRegisterContainer>
+    <HomeRegisterContainer id="HomeRegister">
         <div className="register-container">
           <div className="text-icon-container">
             <div className="icon-container">

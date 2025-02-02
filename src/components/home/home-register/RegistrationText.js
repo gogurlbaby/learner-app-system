@@ -19,7 +19,7 @@ const Container = styled.div`
     font-weight: 700;
     font-family: "Lato", serif;
     line-height: 3rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
     text-align: center;
 }
 `;

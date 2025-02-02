@@ -6,6 +6,7 @@ import { LuCircleDollarSign } from "react-icons/lu";
 import { PiGraduationCap } from "react-icons/pi";
 import { RiParentLine } from "react-icons/ri";
 import { GoImage } from "react-icons/go";
+import { GrLocation } from "react-icons/gr";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -13,7 +14,7 @@ import { HomeRegisterContainer } from "./HomeRegisterationFormContainer.styled";
 import RegistrationText from "./RegistrationText";
 import Button from "../../button/Button";
 import genderOptions from "../../json/home-register/genderOptions.json";
-import disabledOptions from "../../json/home-register/disabled.json";
+import disabilityOptions from "../../json/home-register/disability.json";
 import courseModuleOptions from "../../json/home-register/course_module.json";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 
@@ -42,12 +43,12 @@ function HomeRegisterationForm() {
           "Invalid gender"
         )
         .required("Gender is required"),
-      disabled: Yup.string()
+      disability: Yup.string()
         .oneOf(
-          disabledOptions.map((option) => option.value),
+          disabilityOptions.map((option) => option.value),
           "Invalid"
         )
-        .required("Kindly choose if you are disabled or not"),
+        .required("Kindly choose if you are disability or not"),
       contact: Yup.string().required("Your contact is required").length(10),
       uploadImage: Yup.mixed()
         .required("Image is required"),
@@ -75,7 +76,7 @@ function HomeRegisterationForm() {
             location: "",
             courseModule: "",
             gender: "",
-            disabled: "",
+            disability: "",
             contact: "",
             uploadImage: "",
             amount: "",
@@ -89,7 +90,6 @@ function HomeRegisterationForm() {
          {({ errors, touched, values, handleChange }) => (
           <Form className="form">
             <div className="flex-container">
-            <div>
             <div className="input-container">
               <FaRegUser size={25} className="input-icon" />
               <Field
@@ -102,6 +102,7 @@ function HomeRegisterationForm() {
                className="input"
               />
             </div>
+            {/* Fix error message */}
             {errors.firstName && touched.firstName ? (
                     <div className="error">{errors.firstName}</div>
                   ) : null}
@@ -136,6 +137,7 @@ function HomeRegisterationForm() {
                     <div className="error">{errors.email}</div>
                   ) : null}
             <div className="input-container">
+              <GrLocation size={25} className="input-icon" />
               <Field
                type="text"
                name="location"
@@ -150,7 +152,8 @@ function HomeRegisterationForm() {
                     <div className="error">{errors.location}</div>
                   ) : null}
             </div>
-            <div>
+
+            <div className="flex-container">
             <div className="input-container">
               <PiGraduationCap size={25} className="input-icon" />
               <Field
@@ -210,19 +213,20 @@ function HomeRegisterationForm() {
                     <div className="error">{errors.gender}</div>
                   ) : null}
               <div className="input-container"> 
-                <RiParentLine />
+                <RiParentLine size={25} className="input-icon" />
                 <Field
                  as="select"
-                 id="disabled"
-                 name="disabled"
+                 id="disability"
+                 name="disability"
                  placeholder="Disabled"
                  value={values.disabled}
                  onChange={handleChange}
                  onFocus={() => setIsOpen(true)}
                  onBlur={() => setIsOpen(true)} 
                  className="select-input"
-               >
-                  {disabledOptions.map((option) => (
+               > 
+                  <option value="">Disabled</option>
+                  {disabilityOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                      {option.label}
                     </option>
@@ -234,8 +238,8 @@ function HomeRegisterationForm() {
                <MdKeyboardArrowDown size={25} className="select-icon" />
                 {/* )} */}
               </div>
-              {errors.disabled && touched.disabled ? (
-                    <div className="error">{errors.disabled}</div>
+              {errors.disability && touched.disability ? (
+                    <div className="error">{errors.disability}</div>
                   ) : null}
               <div className="input-container">
                 <HiOutlinePhone size={25} className="input-icon" />
@@ -253,7 +257,7 @@ function HomeRegisterationForm() {
                     <div className="error">{errors.contact}</div>
                   ) : null}
             </div>
-            </div>
+            
               <div className="input-container">
                 <GoImage size={25} className="input-icon" />
                 <Field 

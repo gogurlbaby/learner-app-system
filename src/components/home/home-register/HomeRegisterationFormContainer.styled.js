@@ -6,12 +6,12 @@ export const HomeRegisterContainer = styled.div`
 
 }
 .flex-container{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
 
 @media (min-width: 1200px) {
-     flex-direction: row;
-     gap: 4.063rem;
+     grid-template-columns: repeat(2, 1fr);
+     column-gap: 3rem;
     }
 }
 .input-container{
@@ -27,7 +27,6 @@ export const HomeRegisterContainer = styled.div`
     margin-bottom: 0.5rem;
 }
 .input{
-  /* width: 100%; */
   background: inherit;
   border: none;
   outline: none;

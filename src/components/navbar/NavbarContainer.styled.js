@@ -31,11 +31,12 @@ export const NavbarContainer = styled(Navbar)`
   border-radius: 5px !important;
   display: flex !important;
   align-items: center !important;
+  padding: 0.75rem 1.5rem !important;
   gap: 0.5rem !important;
 
   &:hover {
     background-color: #01589A !important;
-    color: #fff ;
+    color: #fff !important;
   }
 }
 `;

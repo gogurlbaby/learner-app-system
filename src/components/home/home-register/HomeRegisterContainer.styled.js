@@ -18,11 +18,12 @@ export const HomeRegisterContainer = styled.div`
    }
  }
  .icon {
-    color: #177DDC;
+    color: #177DDC !important;
  }
  hr {
     border: 1px solid #D1E5F8;
-    width: 0.063rem;                 
+    background-color: #177DDC;
+    width: 0.2rem;                 
     height: 5rem;  
     position: relative;
     left: 1.2rem;
@@ -31,7 +32,7 @@ export const HomeRegisterContainer = styled.div`
     }
 
 @media (min-width: 1200px) {
-     height: 7rem; 
+     height: 5rem; 
     } 
  }
  .text-icon-container {

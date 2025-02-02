@@ -12,7 +12,7 @@ function Hero() {
           Our expert-led courses are designed to empower you to succeed."
           </p>
           <div className="btn-container">
-            <a href="" className="hero-btn">Get Started</a>
+            <a href="#HomeRegister" className="hero-btn">Get Started</a>
           </div>
         </div>
 
