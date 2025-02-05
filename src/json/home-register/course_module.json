@@ -1,0 +1,7 @@
+[
+    { "value": "html", "label": "HTML" },
+    { "value": "javaScript", "label": "JavaScript" },
+    { "value": "reactJS", "label": "ReactJS" },
+    { "value": "python", "label": "Python" },
+    { "value": "nodeJS", "label": "NodeJS" }
+]
