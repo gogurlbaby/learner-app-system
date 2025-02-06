@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import NavBar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import { Provider } from "@/components/ui/provider";
+import { Provider } from "../components/ui/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -14,7 +14,7 @@ function Footer() {
           className="w-full mb-[2.5rem]"
         />
 
-        <div className="menu-container">
+        <div className="">
           <p className="text-white text-[1.125rem] font-semibold font-sans leading-[2rem] mb-[0.875rem]">
             Menu
           </p>

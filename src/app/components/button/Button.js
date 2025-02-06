@@ -2,7 +2,7 @@ import React from "react";
 
 function Button({ type = "button", onClick, Text, Icon }) {
   return (
-    <div>
+    <>
       <button
         type={type}
         onClick={onClick}
@@ -11,7 +11,7 @@ function Button({ type = "button", onClick, Text, Icon }) {
         {Text}
         {Icon && Icon}
       </button>
-    </div>
+    </>
   );
 }
 

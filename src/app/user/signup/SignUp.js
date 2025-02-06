@@ -9,7 +9,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 // import { useToast } from "@chakra-ui/react";
 
-function SignUp() {
+function SignUp({ handleLogin }) {
   // const toast = useToast();
   const [loading, setLoading] = useState(false);
   // const [otp, setOtp] = useState("");
@@ -25,6 +25,11 @@ function SignUp() {
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Please Confirm your Password"),
   });
+
+  const handleUserLogin = () => {
+    const userData = { name: "John Doe" };
+    handleLogin(userData);
+  };
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
@@ -164,6 +169,7 @@ function SignUp() {
               type="submit"
               Text="Register"
               Icon={<MdKeyboardArrowRight size={25} />}
+              onClick={handleUserLogin}
               disabled={isSubmitting}
             />
           </Form>

@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import SignUp from "../../user/signup/SignUp";
 import Login from "../../user/login/LoginForm";
 
-function ModalContainer({ show, handleClose }) {
+function ModalContainer({ show, handleClose, handleLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
 
   const handleToggle = () => {
@@ -18,9 +18,17 @@ function ModalContainer({ show, handleClose }) {
         </Modal.Title>
         <Modal.Body className="p-[1rem]">
           {isSignUp ? (
-            <SignUp show={show} handleClose={handleClose} />
+            <SignUp
+              show={show}
+              handleLogin={handleLogin}
+              handleClose={handleClose}
+            />
           ) : (
-            <Login show={show} handleClose={handleClose} />
+            <Login
+              show={show}
+              handleLogin={handleLogin}
+              handleClose={handleClose}
+            />
           )}
         </Modal.Body>
         <button

@@ -6,13 +6,12 @@ import "./stacks.css";
 
 function Stacks() {
   const [useDefaultClass, setUseDefaultClass] = useState(false);
-  const getClassName = (index) => {
+  const getStackClassNames = (index) => {
     const classes = [
       "border-white",
       "border-blue",
       "border-green",
       "border-red",
-      "border-orange",
       "border-grey",
     ];
     return classes[index % classes.length];
@@ -26,12 +25,14 @@ function Stacks() {
         Discover our diverse stack of solutions, including software development,
         data science, and cloud tools. Sign up today and kickstart your journey!
       </p>
-      <div className="btn-container">
+      <div className="stacks-btn-container">
         {stacks.map((item, index) => (
           <a
             key={item.id}
             href={item.link}
-            className={`btn ${useDefaultClass ? "" : getClassName(index)}`}
+            className={`stacks-btn ${
+              useDefaultClass ? "" : getStackClassNames(index)
+            }`}
           >
             {item.stack}
           </a>

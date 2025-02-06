@@ -8,7 +8,7 @@ import { GoogleLogin } from "@react-oauth/google";
 // import OtpInput from "react-otp-input";
 import { jwtDecode } from "jwt-decode";
 
-function Login() {
+function Login({ handleLogin }) {
   // const [otp, setOtp] = useState("");
 
   const loginFormSchema = Yup.object().shape({
@@ -19,6 +19,11 @@ function Login() {
       .min(8, "Password must be at least 8 characters")
       .required("Please Password is required"),
   });
+
+  const handleUserLogin = () => {
+    const userData = { name: "John Doe" };
+    handleLogin(userData);
+  };
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
@@ -109,6 +114,7 @@ function Login() {
               type="submit"
               Text="Login"
               Icon={<MdKeyboardArrowRight size={25} />}
+              onClick={handleUserLogin}
               disabled={isSubmitting}
             />
           </Form>

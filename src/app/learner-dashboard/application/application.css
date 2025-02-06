@@ -1,0 +1,54 @@
+.btn {
+  color: #01589a;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: "Inter", serif;
+  line-height: 1.5rem;
+}
+
+.border-white {
+  border: 1px solid #e6e6e6 !important;
+}
+
+.border-blue {
+  border: 1px solid #28ace2 !important;
+}
+
+.border-green {
+  border: 1px solid #77c053 !important;
+}
+
+.border-red {
+  border: 1px solid #a61d24 !important;
+}
+
+.application-btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1280px) {
+  .application-btn-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .application-btn {
+    width: 50%;
+    order: 2 !important;
+  }
+
+  .home-btn {
+    width: 50%;
+    order: 1 !important;
+  }
+}

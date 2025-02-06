@@ -2,15 +2,26 @@
 
 import React, { useState } from "react";
 import { FiLogIn } from "react-icons/fi";
-import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
+import { Navbar, Container, Nav, Offcanvas, Dropdown } from "react-bootstrap";
 import ModalContainer from "../modal/ModalContainer";
 import "./navbar.css";
 
 function NavBar() {
   const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    handleCloseModal();
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+  };
+
   return (
     <>
       <Navbar expand="md" className="navbar-container">
@@ -38,17 +49,41 @@ function NavBar() {
                     Courses
                   </Nav.Link>
                 </div>
-                <Nav.Link className="btn" onClick={handleShowModal}>
-                  Login
-                  <FiLogIn />
-                </Nav.Link>
+                {user ? (
+                  <Dropdown align="end">
+                    <Dropdown.Toggle
+                      as="button"
+                      className="flex items-center gap-2 text-black text-base font-base"
+                    >
+                      <img src="/images/user_icon.svg" alt="" className="" />
+                      <span>{user.name}</span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="">Application</Dropdown.Item>
+                      <Dropdown.Item href="">Profile</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item onClick={handleLogout}>
+                        Logout
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : (
+                  <Nav.Link className="btn" onClick={handleShowModal}>
+                    Login
+                    <FiLogIn />
+                  </Nav.Link>
+                )}
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
 
-      <ModalContainer show={showModal} handleClose={handleCloseModal} />
+      <ModalContainer
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleLogin={handleLogin}
+      />
     </>
   );
 }
