@@ -158,10 +158,7 @@ function SignUp({ handleLogin }) {
               </span>
             )}
             <div className="mt-[1rem] mb-[1.5rem]">
-              <a
-                href=""
-                className="no-underline text-[#177ddc] text-base font-normal font-sans"
-              >
+              <a className="no-underline text-[#177ddc] text-base font-normal font-sans cursor-pointer">
                 Forgot password ?
               </a>
             </div>

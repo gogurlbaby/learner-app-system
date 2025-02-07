@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { MdKeyboardArrowRight, MdOutlineLock } from "react-icons/md";
 import * as Yup from "yup";
-import Button from "@/app/components/button/Button";
+import Button from "../../components/button/Button";
 // import { useRouter } from "next/router";
 
 function ResetPassword() {

@@ -103,10 +103,7 @@ function Login({ handleLogin }) {
               <span className="text-red-600 text-base">{errors.password}</span>
             )}
             <div className="mt-[1rem] mb-[1.5rem]">
-              <a
-                href=""
-                className="no-underline text-[#177ddc] text-base font-normal font-sans"
-              >
+              <a className="no-underline text-[#177ddc] text-base font-normal font-sans cursor-pointer">
                 Forgot password ?
               </a>
             </div>

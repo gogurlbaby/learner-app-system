@@ -12,8 +12,8 @@ function ModalContainer({ show, handleClose, handleLogin }) {
   return (
     <div>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton className="border-b-[0]"></Modal.Header>
-        <Modal.Title className="text-[2.5rem] font-bold font-serif leading-[3rem] text-center mb-[1.5rem]">
+        <Modal.Header closeButton className="border-b-[0]!"></Modal.Header>
+        <Modal.Title className="text-[2.5rem]! font-bold! font-serif! leading-[3rem]! text-center! mb-[1.5rem]!">
           {isSignUp ? "Sign Up" : "Login"}
         </Modal.Title>
         <Modal.Body className="p-[1rem]">

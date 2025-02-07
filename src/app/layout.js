@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import NavBar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import { Provider } from "../components/ui/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +29,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <GoogleOAuthProvider clientId={CLIENT_ID}>
-          <Provider>
-            <NavBar />
-            {children}
-            <Footer />
-          </Provider>
+          <NavBar />
+          {children}
+          <Footer />
         </GoogleOAuthProvider>
       </body>
     </html>
