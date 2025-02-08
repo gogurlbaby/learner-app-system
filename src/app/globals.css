@@ -5,14 +5,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-}
-
-body {
-}
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
 }

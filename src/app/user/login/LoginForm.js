@@ -1,15 +1,12 @@
-import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import React from "react";
 import * as Yup from "yup";
-import { MdKeyboardArrowRight, MdOutlineEmail } from "react-icons/md";
-import { MdOutlineLock } from "react-icons/md";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { Mail, LockKeyhole } from "lucide-react";
 import Button from "../../components/button/Button";
-import { GoogleLogin } from "@react-oauth/google";
-// import OtpInput from "react-otp-input";
-import { jwtDecode } from "jwt-decode";
+import CustomForm from "@/app/components/custom-form/CustomForm";
 
 function Login({ handleLogin }) {
-  // const [otp, setOtp] = useState("");
+  const initialValues = { email: "", password: "" };
 
   const loginFormSchema = Yup.object().shape({
     email: Yup.string()
@@ -45,63 +42,31 @@ function Login({ handleLogin }) {
     }
   };
 
+  const fields = [
+    {
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+      icon: Mail,
+    },
+    {
+      name: "password",
+      type: "password",
+      placeholder: "Password",
+      icon: LockKeyhole,
+    },
+  ];
+
   return (
     <div>
-      <Formik
-        initialValues={{ email: "", password: "" }}
+      <CustomForm
+        initialValues={initialValues}
         validationSchema={loginFormSchema}
         onSubmit={handleSubmit}
-      >
-        {({ errors, touched, isSubmitting }) => (
-          <Form>
-            <div>
-              {/* <OtpInput
-           value={otp}
-           onChange={setOtp}
-           numInputs={6}
-           renderSeparator={<span>-</span>}
-           renderInput={(props) => <input {...props} />}
-          /> */}
-
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  console.log(credentialResponse);
-                  console.log(jwtDecode(credentialResponse.credential));
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
-              <p className="no-underline text-base font-normal font-sans mt-[1.5rem] mb-[1rem] text-center">
-                or
-              </p>
-            </div>
-            <div className="bg-[#f5f5f5] border border-solid border-[#e6e6e6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
-              <MdOutlineEmail size={25} className="text-[#666666]" />
-              <Field
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Email"
-                className="w-full bg-inherit outline-none border-none text-black text-base font-normal font-sans"
-              />
-            </div>
-            {errors.email && touched.email && (
-              <span className="text-red-600 text-base">{errors.email}</span>
-            )}
-            <div className="bg-[#f5f5f5] border border-solid border-[#e6e6e6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
-              <MdOutlineLock size={25} className="text-[#666666]" />
-              <Field
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                className="w-full bg-inherit outline-none border-none text-black text-base font-normal font-sans"
-              />
-            </div>
-            {errors.password && touched.password && (
-              <span className="text-red-600 text-base">{errors.password}</span>
-            )}
+        fields={fields}
+        showGoogleAuth={true}
+        submitButton={(isSubmitting) => (
+          <>
             <div className="mt-[1rem] mb-[1.5rem]">
               <a className="no-underline text-[#177ddc] text-base font-normal font-sans cursor-pointer">
                 Forgot password ?
@@ -114,9 +79,9 @@ function Login({ handleLogin }) {
               onClick={handleUserLogin}
               disabled={isSubmitting}
             />
-          </Form>
+          </>
         )}
-      </Formik>
+      />
     </div>
   );
 }

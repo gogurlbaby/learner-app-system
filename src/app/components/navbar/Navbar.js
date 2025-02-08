@@ -59,9 +59,7 @@ function NavBar() {
                       <span>{user.name}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item href="">Application</Dropdown.Item>
-                      <Dropdown.Item href="">Profile</Dropdown.Item>
-                      <Dropdown.Divider />
+                      <Dropdown.Item href="">Portal</Dropdown.Item>
                       <Dropdown.Item onClick={handleLogout}>
                         Logout
                       </Dropdown.Item>
