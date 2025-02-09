@@ -1,21 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { FiLogIn } from "react-icons/fi";
 import { Navbar, Container, Nav, Offcanvas, Dropdown } from "react-bootstrap";
-import ModalContainer from "../modal/ModalContainer";
+import CustomPopover from "../popover/CustomPopover";
 import "./navbar.css";
 
 function NavBar() {
-  const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState(null);
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
 
   const handleLogin = (userData) => {
     setUser(userData);
-    handleCloseModal();
   };
 
   const handleLogout = () => {
@@ -66,22 +60,13 @@ function NavBar() {
                     </Dropdown.Menu>
                   </Dropdown>
                 ) : (
-                  <Nav.Link className="btn" onClick={handleShowModal}>
-                    Login
-                    <FiLogIn />
-                  </Nav.Link>
+                  <CustomPopover handleLogin={handleLogin} user={user} />
                 )}
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
-
-      <ModalContainer
-        show={showModal}
-        handleClose={handleCloseModal}
-        handleLogin={handleLogin}
-      />
     </>
   );
 }

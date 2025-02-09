@@ -1,7 +1,6 @@
 import React from "react";
 import * as Yup from "yup";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { Mail, LockKeyhole } from "lucide-react";
+import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
 import Button from "../../components/button/Button";
 import CustomForm from "@/app/components/custom-form/CustomForm";
 
@@ -17,11 +16,6 @@ function Login({ handleLogin }) {
       .required("Please Password is required"),
   });
 
-  const handleUserLogin = () => {
-    const userData = { name: "John Doe" };
-    handleLogin(userData);
-  };
-
   const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
       "https://tmp-se-project.azurewebsites.net/api/user/auth/signin";
@@ -34,7 +28,8 @@ function Login({ handleLogin }) {
         },
       });
       const data = await res.json();
-      console.log(data);
+      const userData = { name: "John Doe" };
+      handleLogin(userData);
     } catch (error) {
       console.log("Login error", error);
     } finally {
@@ -66,20 +61,12 @@ function Login({ handleLogin }) {
         fields={fields}
         showGoogleAuth={true}
         submitButton={(isSubmitting) => (
-          <>
-            <div className="mt-[1rem] mb-[1.5rem]">
-              <a className="no-underline text-[#177ddc] text-base font-normal font-sans cursor-pointer">
-                Forgot password ?
-              </a>
-            </div>
-            <Button
-              type="submit"
-              Text="Login"
-              Icon={<MdKeyboardArrowRight size={25} />}
-              onClick={handleUserLogin}
-              disabled={isSubmitting}
-            />
-          </>
+          <Button
+            type="submit"
+            Text="Login"
+            Icon={<ChevronRight size={25} />}
+            disabled={isSubmitting}
+          />
         )}
       />
     </div>

@@ -55,8 +55,12 @@ function ResetPassword() {
   return (
     <div>
       <div>
-        <h1>Reset password</h1>
-        <p>Create a new password and get started</p>
+        <h2 className="text-black text-[2.5rem] font-bold font-serif leading-[3rem] text-center mb-[2rem]">
+          Reset password
+        </h2>
+        <p className="text-black text-base font-normal font-sans text-center mb-[1.5rem]">
+          Create a new password and get started
+        </p>
       </div>
       {message && <p>{message}</p>}
       <Formik

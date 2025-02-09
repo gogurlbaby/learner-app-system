@@ -43,8 +43,12 @@ function ForgotPassword() {
   return (
     <div>
       <div>
-        <h1>Forgot password</h1>
-        <p>Enter your email address to reset your password</p>
+        <h2 className="text-black text-[2.5rem] font-bold font-serif leading-[3rem] text-center mb-[2rem]">
+          Forgot password
+        </h2>
+        <p className="text-black text-base font-normal font-sans text-center mb-[1.5rem]">
+          Enter your email address to reset your password
+        </p>
       </div>
       {message && <p>{message}</p>}
       <Formik

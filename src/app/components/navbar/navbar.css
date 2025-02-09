@@ -18,7 +18,19 @@
   align-items: flex-start !important;
 }
 
-.btn {
+@media (min-width: 1280px) {
+  .navbar-container {
+    padding: 1.75rem 12.563rem !important;
+  }
+
+  .menu-container {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 32rem !important;
+  }
+}
+
+/* .btn {
   color: #01589a !important;
   background-color: #fff !important;
   border: 1px solid #01589a !important;
@@ -33,16 +45,4 @@
 .btn:hover {
   background-color: #01589a !important;
   color: #fff !important;
-}
-
-@media (min-width: 1280px) {
-  .navbar-container {
-    padding: 1.75rem 12.563rem !important;
-  }
-
-  .menu-container {
-    flex-direction: row;
-    align-items: center;
-    margin-right: 32rem !important;
-  }
-}
+} */

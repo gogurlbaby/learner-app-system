@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import * as Yup from "yup";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { Mail, LockKeyhole } from "lucide-react";
+import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
 import Button from "../../components/button/Button";
 import CustomForm from "@/app/components/custom-form/CustomForm";
 
-function SignUp({ handleLogin }) {
+function SignUp({ handleOtpFlow }) {
   const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
 
   const initialValues = { email: "", password: "", confirmPassword: "" };
 
@@ -24,16 +24,12 @@ function SignUp({ handleLogin }) {
       .required("Please Confirm your Password"),
   });
 
-  const handleUserLogin = () => {
-    const userData = { name: "John Doe" };
-    handleLogin(userData);
-  };
-
   const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
       "https://tmp-se-project.azurewebsites.net/api/user/auth/signup";
 
     setLoading(true);
+    setApiError("");
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -44,8 +40,13 @@ function SignUp({ handleLogin }) {
       });
 
       const data = await res.json();
-      console.log(data);
+      if (res.ok) {
+        console.log("OTP", data.user.verificationToken);
 
+        handleOtpFlow(data.user.email);
+      } else {
+        setApiError(data.message || "Something went wrong. Please try again.");
+      }
       // if (res.ok) {
       //   toast({
       //     title: "Signup Successful",
@@ -77,7 +78,8 @@ function SignUp({ handleLogin }) {
       //   isClosable: true,
       //   position: "top-right",
       // });
-      console.log(error);
+      // console.log("Signup error", error);
+      setApiError("Network error. Please try again later");
     } finally {
       setLoading(false);
       setSubmitting(false);
@@ -107,6 +109,9 @@ function SignUp({ handleLogin }) {
 
   return (
     <div>
+      {apiError && (
+        <p className="text-red-500 text-sm text-center mb-2">{apiError}</p>
+      )}
       <CustomForm
         initialValues={initialValues}
         validationSchema={signUpSchema}
@@ -114,20 +119,12 @@ function SignUp({ handleLogin }) {
         fields={fields}
         showGoogleAuth={true}
         submitButton={(isSubmitting) => (
-          <>
-            <div className="mt-[1rem] mb-[1.5rem]">
-              <a className="no-underline text-[#177ddc] text-base font-normal font-sans cursor-pointer">
-                Forgot password ?
-              </a>
-            </div>
-            <Button
-              type="submit"
-              Text="Register"
-              Icon={<MdKeyboardArrowRight size={25} />}
-              onClick={handleUserLogin}
-              disabled={isSubmitting}
-            />
-          </>
+          <Button
+            type="submit"
+            Text="Register"
+            Icon={<ChevronRight size={25} />}
+            disabled={isSubmitting}
+          />
         )}
       />
     </div>
