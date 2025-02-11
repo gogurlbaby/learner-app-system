@@ -3,16 +3,21 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { MdKeyboardArrowRight, MdOutlineLock } from "react-icons/md";
+import { ChevronRight, LockKeyhole } from "lucide-react";
 import * as Yup from "yup";
 import Button from "../../components/button/Button";
+import CustomForm from "../../components/custom-form/CustomForm";
+import { useToast } from "../../../hooks/use-toast";
+
 // import { useRouter } from "next/router";
 
 function ResetPassword() {
   //   const router = useRouter();
   //   const { token } = router.query;
-
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+
+  const initialValues = { password: "", confirmPassword: "" };
 
   const resetPasswordSchema = Yup.object().shape({
     password: Yup.string()
@@ -39,18 +44,49 @@ function ResetPassword() {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage("Your password has been reset successfully");
+        toast({
+          title: data.message,
+          description: "You can now log in with your new password.",
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
         // setTimeout(() => router.push("/login"), 2000);
       } else {
-        setMessage("Failed to reset password. Please try again.");
+        toast({
+          title: "Error",
+          description:
+            data.message || "Failed to reset password. Please try again.",
+          duration: 3000,
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      setMessage("Error: " + error.message);
+      toast({
+        title: "Network error.",
+        description: "Something went wrong. Please try again later.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
     } finally {
-      setSubmitting(false);
       setLoading(false);
+      setSubmitting(false);
     }
   };
+
+  const fields = [
+    {
+      name: "password",
+      type: "password",
+      placeholder: "New Password",
+      icon: LockKeyhole,
+    },
+    {
+      name: "confirmPassword",
+      type: "password",
+      placeholder: "Confirm Password",
+      icon: LockKeyhole,
+    },
+  ];
 
   return (
     <div>
@@ -62,51 +98,20 @@ function ResetPassword() {
           Create a new password and get started
         </p>
       </div>
-      {message && <p>{message}</p>}
-      <Formik
-        initialValues={{ password: "", confirmPassword: "" }}
+      <CustomForm
+        initialValues={initialValues}
         validationSchema={resetPasswordSchema}
         onSubmit={handleResetPassword}
-      >
-        {({ errors, touched, isSubmitting }) => (
-          <Form>
-            <div className="bg-[#f5f5f5] border border-solid border-[#e6e6e6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
-              <MdOutlineLock size={25} className="text-[#666666]" />
-              <Field
-                type="password"
-                name="password"
-                id="password"
-                placeholder="New password"
-                className="w-full bg-inherit outline-none border-none text-black text-base font-normal font-sans"
-              />
-            </div>
-            {errors.password && touched.password && (
-              <span className="text-red-600 text-base">{errors.password}</span>
-            )}
-            <div className="bg-[#f5f5f5] border border-solid border-[#e6e6e6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
-              <MdOutlineLock size={25} className="text-[#666666]" />
-              <Field
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                placeholder="Password"
-                className="w-full bg-inherit outline-none border-none text-black text-base font-normal font-sans"
-              />
-            </div>
-            {errors.confirmPassword && touched.confirmPassword && (
-              <span className="text-red-600 text-base">
-                {errors.confirmPassword}
-              </span>
-            )}
-            <Button
-              type="submit"
-              Text="Reset password"
-              Icon={<MdKeyboardArrowRight size={25} />}
-              disabled={isSubmitting || loading}
-            />
-          </Form>
+        fields={fields}
+        submitButton={(isSubmitting) => (
+          <Button
+            type="submit"
+            Text={loading ? "Resetting..." : "Reset password"}
+            Icon={<ChevronRight size={25} />}
+            disabled={isSubmitting || loading}
+          />
         )}
-      </Formik>
+      />
     </div>
   );
 }

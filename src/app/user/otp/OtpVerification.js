@@ -6,10 +6,11 @@ import { ChevronRight } from "lucide-react";
 import * as Yup from "yup";
 import Button from "../../components/button/Button";
 import OTPInput from "react-otp-input";
+import { toast, useToast } from "../../../hooks/use-toast";
 
 function OtpVerification({ email, onOtpSuccess }) {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const { toast } = useToast();
   // const [resendDisabled, setResendDisabled] = useState(false);
 
   const otpVerificationSchema = Yup.object().shape({
@@ -23,8 +24,6 @@ function OtpVerification({ email, onOtpSuccess }) {
       "https://tmp-se-project.azurewebsites.net/api/user/auth/verify-email";
 
     setLoading(true);
-    setMessage("");
-
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -36,16 +35,30 @@ function OtpVerification({ email, onOtpSuccess }) {
       console.log("Verification Response:", data);
 
       if (response.ok) {
-        setMessage("OTP Verified Successfully ✅");
-
+        toast({
+          title: "OTP Verified Successfully",
+          description: data.message,
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
         const userData = { name: "John Doe" };
         onOtpSuccess(userData);
       } else {
-        setMessage(data.message || "Invalid or expired token.");
+        toast({
+          title: "Invalid or expired token.",
+          description: data.message || "Please try again.",
+          duration: 3000,
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error("Verification Error", error);
-      setMessage("Something went wrong. Please try again.");
+      toast({
+        title: "Network error.",
+        description: "Something went wrong. Please try again.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
     } finally {
       setLoading(false);
       setSubmitting(false);
@@ -97,14 +110,16 @@ function OtpVerification({ email, onOtpSuccess }) {
       <p className="text-black text-base font-normal font-sans text-center mb-[1.5rem]">
         Verify your accounts using the six digit sent to test@gmail.com
       </p>
-      {message && <p>{message}</p>}
       <Formik
         initialValues={{ otp: "" }}
         validationSchema={otpVerificationSchema}
         onSubmit={handleVerifyOtp}
       >
         {({ values, errors, touched, setFieldValue, handleSubmit }) => (
-          <Form onSubmit={handleSubmit}>
+          <Form
+            onSubmit={handleSubmit}
+            className="flex flex-col justify-center items-center"
+          >
             <OTPInput
               value={values.otp}
               onChange={(otp) => setFieldValue("otp", otp)}
@@ -128,7 +143,7 @@ function OtpVerification({ email, onOtpSuccess }) {
               <p className="text-red-600 text-base">{errors.otp}</p>
             )}
 
-            <p>
+            <p className="mt-3">
               Didn’t get a code?{" "}
               <button type="button" className="text-blue-500">
                 Click to resend

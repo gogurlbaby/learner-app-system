@@ -85,7 +85,7 @@ function CustomPopover({ handleLogin }) {
         <PopoverTrigger asChild>
           <div></div>
         </PopoverTrigger>
-        <PopoverContent className="xl:w-[120%] w-full border border-solid border-[#01589a] rounded-[5px]">
+        <PopoverContent className="w-full border border-solid border-[#01589a] rounded-[5px]">
           {(activeForm === "login" || activeForm === "signup") && (
             <div className="text-black text-[2.5rem] font-bold font-serif leading-[3rem] text-center mb-[2rem]">
               {isSignUp ? "Sign Up" : "Login"}

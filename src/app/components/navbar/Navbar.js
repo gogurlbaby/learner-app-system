@@ -1,27 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Container, Nav, Offcanvas, Dropdown } from "react-bootstrap";
+import { GraduationCap, LogIn } from "lucide-react";
 import CustomPopover from "../popover/CustomPopover";
+import { useRouter } from "next/navigation";
 import "./navbar.css";
 
 function NavBar() {
   const [user, setUser] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleLogin = (userData) => {
     console.log("User Logged In:", userData);
     setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
     <>
       <Navbar expand="md" className="navbar-container">
         <Container fluid>
-          <Navbar.Brand href="/">
+          <Navbar.Brand onClick={() => router.push("/")}>
             <img src="/images/azubi-logo.svg" alt="Logo" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -37,12 +49,13 @@ function NavBar() {
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 <div className="menu-container">
-                  <Nav.Link href="/" className="menu-links">
+                  <Nav.Link
+                    onClick={() => router.push("/")}
+                    className="menu-links"
+                  >
                     Home
                   </Nav.Link>
-                  <Nav.Link href="" className="menu-links">
-                    Courses
-                  </Nav.Link>
+                  <Nav.Link className="menu-links">Courses</Nav.Link>
                 </div>
                 {user ? (
                   <Dropdown align="end">
@@ -51,17 +64,25 @@ function NavBar() {
                       className="flex items-center gap-2 text-black text-base font-base"
                     >
                       <img
-                        src="/images/learner-dashboard/user_icon.svg"
+                        src="/images/learner_dashboard/user_icon.svg"
                         alt=""
                         className=""
                       />
                       <span>{user.name}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item href="/learner-dashboard">
+                      <Dropdown.Item
+                        onClick={() => router.push("/learner-dashboard")}
+                        className="dropdown-item"
+                      >
+                        <GraduationCap className="icon" />
                         Portal
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={handleLogout}>
+                      <Dropdown.Item
+                        onClick={handleLogout}
+                        className="dropdown-item"
+                      >
+                        <LogIn className="icon" />
                         Logout
                       </Dropdown.Item>
                     </Dropdown.Menu>

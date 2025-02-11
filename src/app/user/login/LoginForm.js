@@ -5,10 +5,11 @@ import * as Yup from "yup";
 import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
 import Button from "../../components/button/Button";
 import CustomForm from "@/app/components/custom-form/CustomForm";
+import { useToast } from "../../../hooks/use-toast";
 
 function Login({ handleOtpFlow }) {
   const [loading, setLoading] = useState(false);
-  const [apiError, setApiError] = useState("");
+  const { toast } = useToast();
 
   const initialValues = { email: "", password: "" };
 
@@ -26,7 +27,6 @@ function Login({ handleOtpFlow }) {
       "https://tmp-se-project.azurewebsites.net/api/user/auth/signin";
 
     setLoading(true);
-    setApiError("");
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -37,14 +37,30 @@ function Login({ handleOtpFlow }) {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log("Login successful", data);
+        toast({
+          title: data.message,
+          description: "",
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
+        localStorage.setItem("user", JSON.stringify(data.user));
         handleOtpFlow(data.user.email, data.user.verificationToken);
-        console.log("Token Expires At:", data.user.verificationTokenExpiresAt);
       } else {
-        setApiError(data.message || "Something went wrong. Please try again.");
+        toast({
+          title: "Error",
+          description:
+            data.message || "Something went wrong. Please try again.",
+          duration: 3000,
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      setApiError("Network error. Please try again later.");
+      toast({
+        title: "Network error.",
+        description: "Please try again later.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
     } finally {
       setLoading(false);
       setSubmitting(false);
@@ -68,9 +84,6 @@ function Login({ handleOtpFlow }) {
 
   return (
     <div>
-      {apiError && (
-        <p className="text-red-500 text-sm text-center mb-2">{apiError}</p>
-      )}
       <CustomForm
         initialValues={initialValues}
         validationSchema={loginFormSchema}

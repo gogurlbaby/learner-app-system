@@ -3,6 +3,13 @@ import Application from "./application/application";
 import Profile from "./profile/Profile";
 import NoApplication from "./application/NoApplication";
 import NewRegistration from "./application/NewRegistration";
+import { Card, CardContent } from "../../components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs";
 
 function LearnerDashboard() {
   return (
@@ -13,9 +20,41 @@ function LearnerDashboard() {
           Dashboard
         </h2>
       </div>
-      <div className="xl:px-[12.5rem] lg:px-[7.5rem] md:px-[5rem] px-[1rem]">
-        <Application />
-        {/* <Profile /> */}
+      <div className="xl:bottom-[6rem] relative bottom-[1.5rem] xl:px-[12.5rem] lg:px-[7.5rem] md:px-[5rem] px-[1rem]">
+        <Tabs defaultValue="account" className="shadow-none w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger
+              value="account"
+              className="text-black text-base font-sans font-semibold"
+            >
+              Application
+            </TabsTrigger>
+            <TabsTrigger
+              value="password"
+              className="text-black text-base font-sans font-semibold"
+            >
+              Profile
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="account">
+            <Card>
+              <CardContent>
+                <div className="">
+                  <Application />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="password">
+            <Card>
+              <CardContent>
+                <div className="">
+                  <Profile />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
         {/* <NoApplication /> */}
         {/* <NewRegistration /> */}
       </div>

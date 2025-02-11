@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import NavBar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import { Toaster } from "../components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
         </GoogleOAuthProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,12 +1,17 @@
+"use client";
+
 import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
-import { MdKeyboardArrowRight, MdOutlineEmail } from "react-icons/md";
+import { ChevronRight, Mail } from "lucide-react";
 import * as Yup from "yup";
 import Button from "../../components/button/Button";
+import CustomForm from "../../components/custom-form/CustomForm";
+import { useToast } from "../../../hooks/use-toast";
 
 function ForgotPassword() {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const { toast } = useToast();
+
+  const initialValues = { email: "" };
 
   const forgotPasswordSchema = Yup.object().shape({
     email: Yup.string()
@@ -28,18 +33,45 @@ function ForgotPassword() {
         },
       });
       const data = await res.json();
+      console.log("reset", data);
+
       if (res.ok) {
-        setMessage("Password reset link has been sent to your email");
+        toast({
+          title: data.message,
+          description: "Check your email for the reset link.",
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
       } else {
-        setMessage("Something went wrong. Please try again");
+        toast({
+          title: "Error",
+          description:
+            data.message || "Something went wrong. Please try again.",
+          duration: 3000,
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      setMessage("Error: " + error.message);
+      toast({
+        title: "Network error.",
+        description: "Unable to process your request. Try again later.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
     } finally {
-      setSubmitting(false);
       setLoading(false);
+      setSubmitting(false);
     }
   };
+
+  const fields = [
+    {
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+      icon: Mail,
+    },
+  ];
   return (
     <div>
       <div>
@@ -50,36 +82,20 @@ function ForgotPassword() {
           Enter your email address to reset your password
         </p>
       </div>
-      {message && <p>{message}</p>}
-      <Formik
-        initialValues={{ email: "" }}
+      <CustomForm
+        initialValues={initialValues}
         validationSchema={forgotPasswordSchema}
         onSubmit={handleForgotPassword}
-      >
-        {({ errors, touched, isSubmitting }) => (
-          <Form>
-            <div className="bg-[#f5f5f5] border border-solid border-[#e6e6e6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
-              <MdOutlineEmail size={25} className="text-[#666666]" />
-              <Field
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Email"
-                className="w-full bg-inherit outline-none border-none text-black text-base font-normal font-sans"
-              />
-            </div>
-            {errors.email && touched.email && (
-              <span className="text-red-600 text-base">{errors.email}</span>
-            )}
-            <Button
-              type="submit"
-              Text="Reset password"
-              Icon={<MdKeyboardArrowRight size={25} />}
-              disabled={isSubmitting || loading}
-            />
-          </Form>
+        fields={fields}
+        submitButton={(isSubmitting) => (
+          <Button
+            type="submit"
+            Text={loading ? "Sending..." : "Reset password"}
+            Icon={<ChevronRight size={25} />}
+            disabled={isSubmitting || loading}
+          />
         )}
-      </Formik>
+      />
     </div>
   );
 }
