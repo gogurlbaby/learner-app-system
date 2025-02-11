@@ -18,10 +18,19 @@ function CustomPopover({ handleLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [activeForm, setActiveForm] = useState("login");
   const [userEmail, setUserEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const handleOtpFlow = (email) => {
+  const handleOtpFlow = (email, verificationToken) => {
     setUserEmail(email);
+    setOtp(verificationToken);
     setActiveForm("otpVerification");
+    setPopoverOpen(true);
+  };
+
+  const handleOtpSuccess = (userData) => {
+    handleLogin(userData);
+    setPopoverOpen(false);
   };
 
   const renderForm = () => {
@@ -33,18 +42,18 @@ function CustomPopover({ handleLogin }) {
             handleOtpFlow={handleOtpFlow}
           />
         );
-      case "forgotPassword":
-        return <ForgotPassword onSwitch={() => setActiveForm("login")} />;
-      case "resetPassword":
-        return <ResetPassword onSwitch={() => setActiveForm("login")} />;
       case "otpVerification":
         return (
           <OtpVerification
             email={userEmail}
-            onSwitch={() => setActiveForm("login")}
-            handleLogin={handleLogin}
+            token={otp}
+            onOtpSuccess={handleOtpSuccess}
           />
         );
+      case "forgotPassword":
+        return <ForgotPassword onSwitch={() => setActiveForm("login")} />;
+      case "resetPassword":
+        return <ResetPassword onSwitch={() => setActiveForm("login")} />;
       default:
         return (
           <Login
@@ -55,27 +64,37 @@ function CustomPopover({ handleLogin }) {
     }
   };
 
-  const handleToggle = () => {
-    setIsSignUp((prev) => !prev);
-    setActiveForm((prev) => (prev === "signup" ? "login" : "signup"));
+  const handleToggle = (form = "login", email = "") => {
+    setActiveForm(form);
+    setUserEmail(email);
+    setIsSignUp(form === "signup");
+    setPopoverOpen(true);
   };
 
   return (
     <div>
-      <Popover>
+      {!popoverOpen && (
+        <Button
+          className="shadow-none text-[#01589a] bg-white border border-solid border-[#01589a] rounded-[5px] flex justify-center items-center py-[0.75rem]! px-[1.5rem]! hover:bg-[#01589a]! hover:text-white! cursor-pointer"
+          onClick={() => setPopoverOpen(true)}
+        >
+          Login <LogIn />
+        </Button>
+      )}
+      <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant=""
-            className="text-[#01589a] bg-white border border-solid border-[#01589a] rounded-[5px] flex justify-center items-center py-[0.75rem]! px-[1.5rem]! hover:bg-[#01589a]! hover:text-white! cursor-pointer"
-          >
-            Login <LogIn />
-          </Button>
+          <div></div>
         </PopoverTrigger>
         <PopoverContent className="xl:w-[120%] w-full border border-solid border-[#01589a] rounded-[5px]">
           {(activeForm === "login" || activeForm === "signup") && (
             <div className="text-black text-[2.5rem] font-bold font-serif leading-[3rem] text-center mb-[2rem]">
               {isSignUp ? "Sign Up" : "Login"}
             </div>
+          )}
+          {otp && (
+            <p className="text-red-500 text-center text-base">
+              Your OTP: {otp}
+            </p>
           )}
           {renderForm()}
           {activeForm === "login" && (
@@ -89,14 +108,16 @@ function CustomPopover({ handleLogin }) {
             </div>
           )}
 
-          <button
-            onClick={handleToggle}
-            className="text-[#404040] underline decoration-[#01589a] text-lg mt-4 cursor-pointer"
-          >
-            {isSignUp
-              ? "Already have an account? Login"
-              : "Need to create an account? Signup"}
-          </button>
+          {(activeForm === "login" || activeForm === "signup") && (
+            <button
+              onClick={() => handleToggle(isSignUp ? "login" : "signup")}
+              className="text-[#404040] underline decoration-[#01589a] text-lg mt-4 cursor-pointer"
+            >
+              {isSignUp
+                ? "Already have an account? Login"
+                : "Need to create an account? Signup"}
+            </button>
+          )}
         </PopoverContent>
       </Popover>
     </div>

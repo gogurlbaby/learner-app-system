@@ -9,6 +9,7 @@ function NavBar() {
   const [user, setUser] = useState(null);
 
   const handleLogin = (userData) => {
+    console.log("User Logged In:", userData);
     setUser(userData);
   };
 
@@ -49,11 +50,17 @@ function NavBar() {
                       as="button"
                       className="flex items-center gap-2 text-black text-base font-base"
                     >
-                      <img src="/images/user_icon.svg" alt="" className="" />
+                      <img
+                        src="/images/learner-dashboard/user_icon.svg"
+                        alt=""
+                        className=""
+                      />
                       <span>{user.name}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item href="">Portal</Dropdown.Item>
+                      <Dropdown.Item href="/learner-dashboard">
+                        Portal
+                      </Dropdown.Item>
                       <Dropdown.Item onClick={handleLogout}>
                         Logout
                       </Dropdown.Item>

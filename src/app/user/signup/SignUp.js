@@ -41,45 +41,13 @@ function SignUp({ handleOtpFlow }) {
 
       const data = await res.json();
       if (res.ok) {
-        console.log("OTP", data.user.verificationToken);
-
-        handleOtpFlow(data.user.email);
+        console.log("Signup successful:", data);
+        handleOtpFlow(data.user.email, data.user.verificationToken);
       } else {
         setApiError(data.message || "Something went wrong. Please try again.");
       }
-      // if (res.ok) {
-      //   toast({
-      //     title: "Signup Successful",
-      //     description: "User created suucessfully.Please verify your email",
-      //     status: "success",
-      //     duration: 3000,
-      //     isClosable: true,
-      //     position: "top-right",
-      //   });
-      // } else if (data.message === "User already exists") {
-      //   toast({
-      //     title: "Signup Failed",
-      //     description:
-      //       "This email is already registered. Try logging in instead",
-      //     status: "error",
-      //     duration: 3000,
-      //     isClosable: true,
-      //     position: "top-right",
-      //   });
-      // } else {
-      //   throw new Error(data.message || "Signup failed, please try again!");
-      // }
     } catch (error) {
-      // toast({
-      //   title: "Error",
-      //   description: error.message || "Something went wrong. Please try again",
-      //   status: "error",
-      //   duration: 3000,
-      //   isClosable: true,
-      //   position: "top-right",
-      // });
-      // console.log("Signup error", error);
-      setApiError("Network error. Please try again later");
+      setApiError("Network error. Please try again later.");
     } finally {
       setLoading(false);
       setSubmitting(false);
@@ -121,7 +89,7 @@ function SignUp({ handleOtpFlow }) {
         submitButton={(isSubmitting) => (
           <Button
             type="submit"
-            Text="Register"
+            Text={loading ? "Registering..." : "Register"}
             Icon={<ChevronRight size={25} />}
             disabled={isSubmitting}
           />

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { MdKeyboardArrowRight } from "react-icons/md";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { ChevronRight } from "lucide-react";
 import * as Yup from "yup";
 import RegistrationText from "./RegistrationText";
 import Button from "../../components/button/Button";
@@ -18,13 +20,13 @@ import {
 } from "lucide-react";
 import CustomForm from "@/app/components/custom-form/CustomForm";
 
-function HomeRegisterationForm() {
-  // const [isOpen, setIsOpen] = useState(false);
+function HomeRegisterationForm({ email }) {
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     firstName: "",
     lastName: "",
-    email: "",
+    email: email || "",
     location: "",
     courseModule: "",
     gender: "",
@@ -35,13 +37,13 @@ function HomeRegisterationForm() {
     description: "",
   };
 
-  const SUPPORTED_FORMATS = [
-    "image/jpg",
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-  ];
-  const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
+  // const SUPPORTED_FORMATS = [
+  //   "image/jpg",
+  //   "image/jpeg",
+  //   "image/png",
+  //   "image/gif",
+  // ];
+  // const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
   const homeRegisterSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
@@ -83,9 +85,36 @@ function HomeRegisterationForm() {
     description: Yup.string().required("Please add a description"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    const apiUrl = "https://tmp-se-project.azurewebsites.net/api/learners";
+    setLoading(true);
+    try {
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        body: JSON.stringify({ email, ...values }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        console.log("Registration successful:", data);
+      } else {
+        console.error("Registration failed:", data.message);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+      setSubmitting(false);
+    }
   };
+
+  // useEffect(() => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   setEmail(params.get("email") || "");
+  // }, []);
 
   const fieldSections = [
     {
@@ -108,6 +137,8 @@ function HomeRegisterationForm() {
           type: "email",
           placeholder: "Email",
           icon: Mail,
+          disabled: true,
+          value: email,
         },
         {
           name: "location",
@@ -181,8 +212,8 @@ function HomeRegisterationForm() {
         submitButton={(isSubmitting) => (
           <Button
             type="submit"
-            Text="Register"
-            Icon={<MdKeyboardArrowRight size={25} />}
+            Text={loading ? "Completing registeration..." : "Register"}
+            Icon={<ChevronRight size={25} />}
             disabled={isSubmitting}
           />
         )}

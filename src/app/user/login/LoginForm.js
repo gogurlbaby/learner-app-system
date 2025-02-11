@@ -1,10 +1,15 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
 import Button from "../../components/button/Button";
 import CustomForm from "@/app/components/custom-form/CustomForm";
 
-function Login({ handleLogin }) {
+function Login({ handleOtpFlow }) {
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+
   const initialValues = { email: "", password: "" };
 
   const loginFormSchema = Yup.object().shape({
@@ -19,6 +24,9 @@ function Login({ handleLogin }) {
   const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
       "https://tmp-se-project.azurewebsites.net/api/user/auth/signin";
+
+    setLoading(true);
+    setApiError("");
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -28,11 +36,17 @@ function Login({ handleLogin }) {
         },
       });
       const data = await res.json();
-      const userData = { name: "John Doe" };
-      handleLogin(userData);
+      if (res.ok) {
+        console.log("Login successful", data);
+        handleOtpFlow(data.user.email, data.user.verificationToken);
+        console.log("Token Expires At:", data.user.verificationTokenExpiresAt);
+      } else {
+        setApiError(data.message || "Something went wrong. Please try again.");
+      }
     } catch (error) {
-      console.log("Login error", error);
+      setApiError("Network error. Please try again later.");
     } finally {
+      setLoading(false);
       setSubmitting(false);
     }
   };
@@ -54,6 +68,9 @@ function Login({ handleLogin }) {
 
   return (
     <div>
+      {apiError && (
+        <p className="text-red-500 text-sm text-center mb-2">{apiError}</p>
+      )}
       <CustomForm
         initialValues={initialValues}
         validationSchema={loginFormSchema}
@@ -63,7 +80,7 @@ function Login({ handleLogin }) {
         submitButton={(isSubmitting) => (
           <Button
             type="submit"
-            Text="Login"
+            Text={loading ? "Verifying Login..." : "Login"}
             Icon={<ChevronRight size={25} />}
             disabled={isSubmitting}
           />

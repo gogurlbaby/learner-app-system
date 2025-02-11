@@ -115,6 +115,7 @@ function CustomForm({
                       placeholder={field.placeholder}
                       options={field.options}
                       as={field.as}
+                      disabled={field.disabled || false}
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
