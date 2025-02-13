@@ -2,12 +2,15 @@
 
 import React, { useState } from "react";
 import Button from "../../components/button/Button";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./application.css";
 import stacksButton from "../../../json/application_buttons.json";
 import GreyButton from "../../components/button/GreyButton";
+import { useRouter } from "next/navigation";
 
-function Application() {
+function Application({ onStartRegistration }) {
+  const router = useRouter();
+
   const [useDefaultClass, setUseDefaultClass] = useState(false);
   const getClassName = (index) => {
     const classes = [
@@ -20,15 +23,6 @@ function Application() {
   };
   return (
     <div className="bg-white xl:pt-[1.5rem] xl:pb-[6.25rem] xl:pl-[3.438rem] pt-[1rem] pb-[6.25rem] rounded-[5px]">
-      {/* <div className="xl:flex xl:justify-start flex justify-center items-center gap-[1rem] mb-[2.188rem]">
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Application
-        </h4>
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Profile
-        </h4>
-      </div> */}
-
       <div className="xl:flex xl:gap-[2.5rem] mb-[2.813rem]">
         <div className="xl:flex xl:flex-col flex gap-[0.5rem]">
           <h4 className="text-[#999] text-base font-sans font-normal">
@@ -86,13 +80,14 @@ function Application() {
       <div className="application-btn-container">
         <Button
           Text="Start new application"
-          Icon={<MdKeyboardArrowRight size={25} />}
-          className="application-btn"
+          iconPosition="left"
+          Icon={<ChevronLeft size={25} />}
+          onClick={onStartRegistration}
         />
         <GreyButton
           Text="Home"
-          Icon={<MdKeyboardArrowRight size={25} className="text-[#404040]" />}
-          className="home-btn"
+          Icon={<ChevronRight size={25} className="text-[#404040]" />}
+          onClick={() => router.push("/")}
         />
       </div>
     </div>

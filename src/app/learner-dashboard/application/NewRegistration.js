@@ -1,20 +1,6 @@
 "use client";
 
-import React from "react";
-import { FaRegUser } from "react-icons/fa6";
-import { HiOutlinePhone } from "react-icons/hi";
-import { LuCircleDollarSign } from "react-icons/lu";
-import { PiGraduationCap } from "react-icons/pi";
-import { RiParentLine } from "react-icons/ri";
-import { GoImage } from "react-icons/go";
-import { GrLocation } from "react-icons/gr";
-import {
-  MdKeyboardArrowRight,
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowUp,
-  MdKeyboardArrowDown,
-  MdOutlineEmail,
-} from "react-icons/md";
+import React, { useState } from "react";
 import {
   UserRound,
   Mail,
@@ -24,8 +10,9 @@ import {
   Phone,
   Image,
   CircleDollarSign,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import RegistrationText from "../../(home)/home-register/RegistrationText";
 import Button from "../../components/button/Button";
@@ -34,8 +21,14 @@ import genderOptions from "../../../json/home-register/genderOptions.json";
 import disabilityOptions from "../../../json/home-register/disability.json";
 import courseModuleOptions from "../../../json/home-register/course_module.json";
 import CustomForm from "@/app/components/custom-form/CustomForm";
+import { useRouter } from "next/navigation";
+import { useToast } from "../../../hooks/use-toast";
 
-function NewRegistration() {
+function NewRegistration({ onComplete }) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -65,7 +58,7 @@ function NewRegistration() {
       .email("Invalid email address")
       .required("Email Address is required"),
     location: Yup.string().required("Please add your location"),
-    courseModule: Yup.string()
+    course: Yup.string()
       .oneOf(
         courseModuleOptions.map((option) => option.value),
         "Invalid course module"
@@ -98,8 +91,58 @@ function NewRegistration() {
     description: Yup.string().required("Please add a description"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    console.log("Submitting Registrations Data", values);
+    setLoading(true);
+    try {
+      const apiLearnersUrl =
+        "https://tmp-se-project.azurewebsites.net/api/learners";
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+
+      const res = await fetch(apiLearnersUrl, {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type": "applications/json",
+        },
+      });
+      const data = await res.json();
+      console.log("API Response", data);
+
+      if (res.ok) {
+        toast({
+          title: "Registration Successful",
+          description: "Your registration has been completed successfully!",
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
+
+        setTimeout(() => {
+          setSubmitting(false);
+          if (onComplete) {
+            onComplete();
+          }
+        }, 1000);
+      } else {
+        throw new Error(
+          data.message || "Something went wrong. Please try again."
+        );
+      }
+    } catch (error) {
+      console.log("Registration Error", error);
+      toast({
+        title: "Registration Failed ❌",
+        description: error.message,
+        duration: 3000,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+      setSubmitting(false);
+    }
   };
 
   const fieldSections = [
@@ -136,7 +179,7 @@ function NewRegistration() {
       isGrid: true,
       fields: [
         {
-          name: "courseModule",
+          name: "course",
           placeholder: "Choose module",
           icon: GraduationCap,
           options: courseModuleOptions,
@@ -187,15 +230,6 @@ function NewRegistration() {
 
   return (
     <div className="bg-white xl:pt-[1.5rem] xl:pb-[6.25rem] xl:pl-[3.438rem] xl:bottom-[5rem] md:bottom-[1.5rem] pt-[1rem] pb-[6.25rem] relative bottom-[0.75rem] rounded-[5px]">
-      <div className="xl:flex xl:justify-start flex justify-center items-center gap-[1rem] mb-[2.188rem]">
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Application
-        </h4>
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Profile
-        </h4>
-      </div>
-
       <div className="xl:pt-[4.75rem] pt-[3rem]">
         <RegistrationText Text="Start new application" />
         <CustomForm
@@ -203,18 +237,19 @@ function NewRegistration() {
           validationSchema={newRegistrationSchema}
           onSubmit={handleSubmit}
           fieldSections={fieldSections}
-          submitButton={(isSubmitting) => (
+          submitButton={(isSubmitting, isValid) => (
             <div className="w-full xl:flex xl:flex-row xl:items-center mt-[3.375rem] flex flex-col gap-[1.5rem]">
               <GreyButton
                 Text="Back"
-                Icon={<MdKeyboardArrowLeft size={25} />}
+                Icon={<ChevronLeft size={25} />}
                 iconPosition="left"
+                onClick={() => router.back()}
               />
               <Button
                 type="submit"
-                Text="Register"
-                Icon={<MdKeyboardArrowRight size={25} />}
-                disabled={isSubmitting}
+                Text={loading ? "Registering..." : "Register"}
+                Icon={<ChevronRight size={25} />}
+                disabled={isSubmitting || !isValid}
               />
             </div>
           )}

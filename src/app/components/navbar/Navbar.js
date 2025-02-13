@@ -14,7 +14,7 @@ function NavBar() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      setTimeout(() => setUser(JSON.parse(storedUser)), 100);
     }
   }, []);
 
@@ -34,7 +34,11 @@ function NavBar() {
       <Navbar expand="md" className="navbar-container">
         <Container fluid>
           <Navbar.Brand onClick={() => router.push("/")}>
-            <img src="/images/azubi-logo.svg" alt="Logo" />
+            <img
+              src="/images/azubi-logo.svg"
+              alt="Logo"
+              className="navbar-logo"
+            />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Offcanvas

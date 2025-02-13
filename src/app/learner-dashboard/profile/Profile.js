@@ -2,18 +2,22 @@
 
 import React, { useState } from "react";
 import {
-  MdKeyboardArrowRight,
-  MdKeyboardArrowLeft,
-  MdOutlineLock,
-} from "react-icons/md";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
+  ChevronLeft,
+  ChevronRight,
+  LockKeyhole,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import Button from "../../components/button/Button";
 import GreyButton from "../../components/button/GreyButton";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { useRouter } from "next/navigation";
 
 function Profile() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
   const oldToNewPasswordSchema = Yup.object().shape({
     oldPassword: Yup.string()
       .min(8, "Password must be at least 8 characters")
@@ -22,18 +26,9 @@ function Profile() {
       .min(8, "Password must be at least 8 characters")
       .required("Please enter your new password"),
   });
-  return (
-    // xl:bottom-[5rem] md:bottom-[1.5rem] relative bottom-[0.75rem]
-    <div className="bg-white xl:pt-[1.5rem] xl:pb-[6.25rem] xl:pl-[3.438rem] pt-[1rem] pb-[6.25rem] rounded-[5px]">
-      {/* <div className="xl:flex xl:justify-start flex justify-center items-center gap-[1rem] mb-[2.188rem]">
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Application
-        </h4>
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Profile
-        </h4>
-      </div> */}
 
+  return (
+    <div className="bg-white xl:pt-[1.5rem] xl:pb-[6.25rem] xl:pl-[3.438rem] pt-[1rem] pb-[6.25rem] rounded-[5px]">
       <div className="xl:flex xl:items-center xl:gap-[2.5rem] mb-[2.813rem]">
         <img
           src="/images/learner_dashboard/profile_icon.svg"
@@ -92,10 +87,10 @@ function Profile() {
         {({ errors, touched, isSubmitting }) => (
           <Form className="xl:flex xl:gap-[2.5rem] xl:mb-[3.625rem] mb-5">
             <div className="bg-[#f5f5f5] border border-solid border-[#e6e6e6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
-              <MdOutlineLock size={25} className="text-[#666666]" />
+              <LockKeyhole size={25} className="text-[#666666]" />
               <Field
-                type="oldPassword"
-                name="newPassword"
+                type="password"
+                name="oldPassword"
                 id="oldPassword"
                 placeholder="Old password"
                 className="w-full bg-inherit outline-none border-none text-black text-base font-normal font-sans"
@@ -104,7 +99,7 @@ function Profile() {
                 className=""
                 onClick={() => setShowPassword((prev) => !prev)}
               >
-                {showPassword ? <BsEye size={20} /> : <BsEyeSlash size={20} />}
+                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </div>
             </div>
             {/* {errors.oldPassword && touched.oldPassword && (
@@ -113,9 +108,9 @@ function Profile() {
               </span>
             )} */}
             <div className="bg-[#f5f5f5] border border-solid border-[#e6e6e6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
-              <MdOutlineLock size={25} className="text-[#666666]" />
+              <LockKeyhole size={25} className="text-[#666666]" />
               <Field
-                type="newPassword"
+                type="password"
                 name="newPassword"
                 id="newPassword"
                 placeholder="New Password"
@@ -125,7 +120,7 @@ function Profile() {
                 className=""
                 onClick={() => setShowPassword((prev) => !prev)}
               >
-                {showPassword ? <BsEye size={20} /> : <BsEyeSlash size={20} />}
+                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </div>
             </div>
             {/* {errors.newPassword && touched.newPassword && (
@@ -146,13 +141,14 @@ function Profile() {
       <div className="application-btn-container">
         <GreyButton
           Text="Back"
-          Icon={<MdKeyboardArrowLeft size={25} />}
+          Icon={<ChevronLeft size={25} />}
           iconPosition="left"
+          onClick={() => router.back()}
         />
         <Button
           Text="Edit"
-          Icon={<MdKeyboardArrowRight size={25} />}
-          className="application-btn"
+          Icon={<ChevronRight size={25} />}
+          onClick={() => router.push("learner-dashboard/profile")}
         />
       </div>
     </div>

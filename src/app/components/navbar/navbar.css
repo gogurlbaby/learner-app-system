@@ -4,6 +4,10 @@
   width: 100% !important;
 }
 
+.navbar-logo {
+  width: 120% !important;
+}
+
 .menu-links {
   color: #000 !important;
   font-size: 1rem !important;
@@ -32,15 +36,20 @@
   color: #666 !important;
 }
 
+@media (min-width: 768px) {
+  .menu-container {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 5rem !important;
+  }
+}
+
 @media (min-width: 1280px) {
   .navbar-container {
     padding: 1.75rem 12.563rem !important;
   }
 
   .menu-container {
-    flex-direction: row;
-    align-items: center;
-    /* justify-content: space-evenly !important; */
     margin-right: 20rem !important;
   }
 }

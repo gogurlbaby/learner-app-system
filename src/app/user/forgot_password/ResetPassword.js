@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
-import { MdKeyboardArrowRight, MdOutlineLock } from "react-icons/md";
 import { ChevronRight, LockKeyhole } from "lucide-react";
 import * as Yup from "yup";
 import Button from "../../components/button/Button";

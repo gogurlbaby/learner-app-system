@@ -47,6 +47,7 @@ function SignUp({ handleOtpFlow }) {
           duration: 3000,
           className: "bg-emerald-700 text-white",
         });
+        localStorage.setItem("user", JSON.stringify(data.user));
         handleOtpFlow(data.user.email, data.user.verificationToken);
       } else {
         toast({

@@ -1,9 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Application from "./application/application";
 import Profile from "./profile/Profile";
 import NoApplication from "./application/NoApplication";
 import NewRegistration from "./application/NewRegistration";
-import { Card, CardContent } from "../../components/ui/card";
 import {
   Tabs,
   TabsContent,
@@ -12,6 +13,26 @@ import {
 } from "../../components/ui/tabs";
 
 function LearnerDashboard() {
+  const [activeTab, setActiveTab] = useState("no-application");
+  const [registrationComplete, setRegistrationComplete] = useState(false);
+
+  useEffect(() => {
+    const isSignedUp = localStorage.getItem("userSignedUp");
+    if (isSignedUp) {
+      setActiveTab("no-application");
+      localStorage.removeItem("userSignedUp");
+    }
+  }, []);
+
+  const handleStartRegistration = () => {
+    setActiveTab("new-registration");
+  };
+
+  const handleRegistrationComplete = () => {
+    setRegistrationComplete(true);
+    setActiveTab("application");
+  };
+
   return (
     <div className="">
       <div className="xl:pt-[2.625rem] xl:pb-[7.125rem] xl:pl-[11.813rem] lg:pl-[7.5rem] md:pl-[5rem] bg-[#01589A] flex items-center gap-[1rem] pt-[1rem] pb-[2rem] pl-[1rem]">
@@ -20,43 +41,51 @@ function LearnerDashboard() {
           Dashboard
         </h2>
       </div>
-      <div className="xl:bottom-[6rem] relative bottom-[1.5rem] xl:px-[12.5rem] lg:px-[7.5rem] md:px-[5rem] px-[1rem]">
-        <Tabs defaultValue="account" className="shadow-none w-full">
+      <div className="xl:bottom-[3.5rem] relative bottom-[1.5rem] xl:px-[12.5rem] lg:px-[7.5rem] md:px-[5rem] px-[1rem]">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="shadow-none w-full"
+        >
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger
-              value="account"
-              className="text-black text-base font-sans font-semibold"
-            >
-              Application
-            </TabsTrigger>
-            <TabsTrigger
-              value="password"
-              className="text-black text-base font-sans font-semibold"
-            >
-              Profile
-            </TabsTrigger>
+            {registrationComplete && (
+              <>
+                <TabsTrigger
+                  value="application"
+                  className="text-black text-base font-sans font-semibold"
+                >
+                  Application
+                </TabsTrigger>
+                <TabsTrigger
+                  value="profile"
+                  className="text-black text-base font-sans font-semibold"
+                >
+                  Profile
+                </TabsTrigger>
+              </>
+            )}
           </TabsList>
-          <TabsContent value="account">
-            <Card>
-              <CardContent>
-                <div className="">
-                  <Application />
-                </div>
-              </CardContent>
-            </Card>
+
+          {!registrationComplete && (
+            <TabsContent value="no-application">
+              <NoApplication onStartRegistration={handleStartRegistration} />
+            </TabsContent>
+          )}
+          <TabsContent value="new-registration">
+            <NewRegistration onComplete={handleRegistrationComplete} />
           </TabsContent>
-          <TabsContent value="password">
-            <Card>
-              <CardContent>
-                <div className="">
-                  <Profile />
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+
+          {registrationComplete && (
+            <>
+              <TabsContent value="application">
+                <Application onStartRegistration={handleStartRegistration} />
+              </TabsContent>
+              <TabsContent value="profile">
+                <Profile />
+              </TabsContent>
+            </>
+          )}
         </Tabs>
-        {/* <NoApplication /> */}
-        {/* <NewRegistration /> */}
       </div>
     </div>
   );

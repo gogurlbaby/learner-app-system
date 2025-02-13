@@ -1,20 +1,19 @@
 import React from "react";
 import Button from "../../components/button/Button";
 import GreyButton from "../../components/button/GreyButton";
-import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-function NoApplication() {
+function NoApplication({ onStartRegistration }) {
+  const router = useRouter();
+
+  const handleStartNewApplication = () => {
+    localStorage.setItem("registrationInProgress", true);
+    onStartRegistration();
+  };
+
   return (
     <div className="bg-white xl:pt-[1.5rem] xl:pb-[6.25rem] xl:pl-[3.438rem] xl:bottom-[5rem] md:bottom-[1.5rem] pt-[1rem] pb-[6.25rem] relative bottom-[0.75rem] rounded-[5px]">
-      <div className="xl:flex xl:justify-start flex justify-center items-center gap-[1rem] mb-[2.188rem]">
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Application
-        </h4>
-        <h4 className="text-black text-[1.25rem] font-sans font-semibold leading-[2rem]">
-          Profile
-        </h4>
-      </div>
-
       <div className="flex flex-col justify-content items-center gap-[2.5rem] mb-[3.5rem]">
         <img
           src="/images/learner_dashboard/no_application_image.svg"
@@ -29,13 +28,14 @@ function NoApplication() {
       <div className="application-btn-container">
         <GreyButton
           Text="Back"
-          Icon={<MdKeyboardArrowLeft size={25} />}
+          Icon={<ChevronLeft size={25} />}
           iconPosition="left"
+          onClick={() => router.back()}
         />
         <Button
           Text="Start new application"
-          Icon={<MdKeyboardArrowRight size={25} />}
-          className="application-btn"
+          Icon={<ChevronRight size={25} />}
+          onClick={handleStartNewApplication}
         />
       </div>
     </div>
