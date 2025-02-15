@@ -17,10 +17,10 @@ import * as Yup from "yup";
 import RegistrationText from "../../(home)/home-register/RegistrationText";
 import Button from "../../components/button/Button";
 import GreyButton from "../../components/button/GreyButton";
-import genderOptions from "../../../json/home-register/genderOptions.json";
-import disabilityOptions from "../../../json/home-register/disability.json";
-import courseModuleOptions from "../../../json/home-register/course_module.json";
-import CustomForm from "@/app/components/custom-form/CustomForm";
+import genderOptions from "../../learner/json/home-register/genderOptions.json";
+import disabilityOptions from "../../learner/json/home-register/disability.json";
+import courseModuleOptions from "../../learner/json/home-register/course_module.json";
+import CustomForm from "../../components/custom-form/CustomForm";
 import { useRouter } from "next/navigation";
 import { useToast } from "../../../hooks/use-toast";
 
@@ -30,14 +30,14 @@ function NewRegistration({ onComplete }) {
   const { toast } = useToast();
 
   const initialValues = {
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     email: "",
     location: "",
-    courseModule: "",
+    course: "",
     gender: "",
     disability: "",
-    contact: "",
+    phone: "",
     uploadImage: "",
     amount: "",
     description: "",
@@ -52,8 +52,8 @@ function NewRegistration({ onComplete }) {
   const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
   const newRegistrationSchema = Yup.object().shape({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
+    firstname: Yup.string().required("First name is required"),
+    lastname: Yup.string().required("Last name is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email Address is required"),
@@ -75,8 +75,8 @@ function NewRegistration({ onComplete }) {
         disabilityOptions.map((option) => option.value),
         "Invalid"
       )
-      .required("Kindly choose if you are disability or not"),
-    contact: Yup.string().required("Your contact is required").length(10),
+      .required("Kindly choose if you have a disability or not"),
+    phone: Yup.string().required("Your phone number is required").length(10),
     uploadImage: Yup.mixed().required("Image is required"),
     // .test(
     //   "fileSize",
@@ -87,7 +87,9 @@ function NewRegistration({ onComplete }) {
     //   "fileFormat",
     //   "Unsupported file format",
     //   (value) => value && SUPPORTED_FORMATS.includes(value.type)),
-    amount: Yup.string().required("Please enter an amount"),
+    amount: Yup.number()
+      .typeError("Amount must be a number")
+      .required("Please enter an amount"),
     description: Yup.string().required("Please add a description"),
   });
 
@@ -97,16 +99,16 @@ function NewRegistration({ onComplete }) {
     try {
       const apiLearnersUrl =
         "https://tmp-se-project.azurewebsites.net/api/learners";
-      const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        formData.append(key, values[key]);
-      });
+      // const formData = new FormData();
+      // Object.keys(values).forEach((key) => {
+      //   formData.append(key, values[key]);
+      // });
 
       const res = await fetch(apiLearnersUrl, {
         method: "POST",
-        body: formData,
+        body: JSON.stringify(values),
         headers: {
-          "Content-Type": "applications/json",
+          "Content-Type": "application/json",
         },
       });
       const data = await res.json();
@@ -150,13 +152,13 @@ function NewRegistration({ onComplete }) {
       isGrid: true,
       fields: [
         {
-          name: "firstName",
+          name: "firstname",
           type: "text",
           placeholder: "First name",
           icon: UserRound,
         },
         {
-          name: "lastName",
+          name: "lastname",
           type: "text",
           placeholder: "Last name",
           icon: UserRound,
@@ -192,12 +194,12 @@ function NewRegistration({ onComplete }) {
         },
         {
           name: "disability",
-          placeholder: "Disabled",
+          placeholder: "Disabled or not",
           icon: UsersRound,
           options: disabilityOptions,
         },
         {
-          name: "contact",
+          name: "phone",
           type: "text",
           placeholder: "Phone",
           icon: Phone,
@@ -215,7 +217,7 @@ function NewRegistration({ onComplete }) {
         },
         {
           name: "amount",
-          type: "text",
+          type: "number",
           placeholder: "Amount",
           icon: CircleDollarSign,
         },

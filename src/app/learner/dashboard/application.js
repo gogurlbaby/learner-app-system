@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Button from "../../components/button/Button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./application.css";
-import stacksButton from "../../../json/application_buttons.json";
+import stacksButton from "../json/application_buttons.json";
 import GreyButton from "../../components/button/GreyButton";
 import { useRouter } from "next/navigation";
 

@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Application from "./application/application";
-import Profile from "./profile/Profile";
-import NoApplication from "./application/NoApplication";
-import NewRegistration from "./application/NewRegistration";
+import Application from "./application";
+import Profile from "./Profile";
+import NoApplication from "./NoApplication";
+import NewRegistration from "./NewRegistration";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../../components/ui/tabs";
+} from "../../../components/ui/tabs";
 
 function LearnerDashboard() {
   const [activeTab, setActiveTab] = useState("no-application");

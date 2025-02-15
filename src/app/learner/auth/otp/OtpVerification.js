@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { ChevronRight } from "lucide-react";
 import * as Yup from "yup";
-import Button from "../../components/button/Button";
+import Button from "../../../components/button/Button";
 import OTPInput from "react-otp-input";
-import { toast, useToast } from "../../../hooks/use-toast";
+import { toast, useToast } from "../../../../hooks/use-toast";
 
 function OtpVerification({ email, onOtpSuccess }) {
   const [loading, setLoading] = useState(false);

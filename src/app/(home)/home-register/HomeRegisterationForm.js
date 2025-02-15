@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import * as Yup from "yup";
 import RegistrationText from "./RegistrationText";
 import Button from "../../components/button/Button";
-import genderOptions from "../../../json/home-register/genderOptions.json";
-import disabilityOptions from "../../../json/home-register/disability.json";
-import courseModuleOptions from "../../../json/home-register/course_module.json";
+import genderOptions from "../../learner/json/home-register/genderOptions.json";
+import disabilityOptions from "../../learner/json/home-register/disability.json";
+import courseModuleOptions from "../../learner/json/home-register/course_module.json";
 import {
   UserRound,
   Mail,
@@ -18,7 +18,7 @@ import {
   Image,
   CircleDollarSign,
 } from "lucide-react";
-import CustomForm from "@/app/components/custom-form/CustomForm";
+import CustomForm from "../../components/custom-form/CustomForm";
 
 function HomeRegisterationForm({ email }) {
   const [loading, setLoading] = useState(false);

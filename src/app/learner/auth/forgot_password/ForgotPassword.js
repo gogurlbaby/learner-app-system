@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { ChevronRight, Mail } from "lucide-react";
 import * as Yup from "yup";
-import Button from "../../components/button/Button";
-import CustomForm from "../../components/custom-form/CustomForm";
-import { useToast } from "../../../hooks/use-toast";
+import Button from "../../../components/button/Button";
+import CustomForm from "../../../components/custom-form/CustomForm";
+import { useToast } from "../../../../hooks/use-toast";
 
 function ForgotPassword() {
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ function ForgotPassword() {
 
   const handleForgotPassword = async (values, { setSubmitting }) => {
     const apiUrl =
-      "https://tmp-se-project.azurewebsites.net/api/admin/auth/forgot-password";
+      "https://tmp-se-project.azurewebsites.net/api/user/auth/forgot-password";
 
     setLoading(true);
     try {

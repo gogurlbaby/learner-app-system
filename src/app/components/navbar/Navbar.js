@@ -76,7 +76,7 @@ function NavBar() {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item
-                        onClick={() => router.push("/learner-dashboard")}
+                        onClick={() => router.push("/learner/dashboard")}
                         className="dropdown-item"
                       >
                         <GraduationCap className="icon" />

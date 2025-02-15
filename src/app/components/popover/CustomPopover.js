@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "../../../components/ui/button";
 import { LogIn } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../../../components/ui/popover";
-import SignUp from "../../user/signup/SignUp";
-import Login from "../../user/login/LoginForm";
-import ForgotPassword from "@/app/user/forgot_password/ForgotPassword";
-import ResetPassword from "@/app/user/forgot_password/ResetPassword";
-import OtpVerification from "@/app/user/otp/OtpVerification";
+import SignUp from "../../learner/auth/signup/SignUp";
+import Login from "../../learner/auth/login/LoginForm";
+import ForgotPassword from "../../learner/auth/forgot_password/ForgotPassword";
+import ResetPassword from "../../learner/auth/forgot_password/ResetPassword";
+import OtpVerification from "../../learner/auth/otp/OtpVerification";
 
 function CustomPopover({ handleLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -58,7 +57,7 @@ function CustomPopover({ handleLogin }) {
         return (
           <Login
             onSwitch={() => setActiveForm("signup")}
-            handleOtpFlow={handleOtpFlow}
+            // handleOtpFlow={handleOtpFlow}
           />
         );
     }
@@ -74,12 +73,12 @@ function CustomPopover({ handleLogin }) {
   return (
     <div>
       {!popoverOpen && (
-        <Button
-          className="shadow-none text-[#01589a] bg-white border border-solid border-[#01589a] rounded-[5px] flex justify-center items-center py-[0.75rem]! px-[1.5rem]! hover:bg-[#01589a]! hover:text-white! cursor-pointer"
+        <button
+          className="text-[#01589a] border-1 border-solid border-[#01589a] rounded-[5px] font-semibold font-sans text-base flex gap-[0.5rem] items-center py-[0.5rem] px-[1.5rem] hover:bg-[#01589a] hover:text-white cursor-pointer"
           onClick={() => setPopoverOpen(true)}
         >
           Login <LogIn />
-        </Button>
+        </button>
       )}
       <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
         <PopoverTrigger asChild>

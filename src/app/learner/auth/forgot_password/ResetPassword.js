@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { ChevronRight, LockKeyhole } from "lucide-react";
 import * as Yup from "yup";
-import Button from "../../components/button/Button";
-import CustomForm from "../../components/custom-form/CustomForm";
-import { useToast } from "../../../hooks/use-toast";
+import Button from "../../../components/button/Button";
+import CustomForm from "../../../components/custom-form/CustomForm";
+import { useToast } from "../../../../hooks/use-toast";
 
 // import { useRouter } from "next/router";
 

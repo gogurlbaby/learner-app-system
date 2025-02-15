@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
-import Button from "../../components/button/Button";
+import Button from "../../../components/button/Button";
 import CustomForm from "@/app/components/custom-form/CustomForm";
-import { useToast } from "../../../hooks/use-toast";
+import { useToast } from "../../../../hooks/use-toast";
 
 function Login({ handleOtpFlow }) {
   const [loading, setLoading] = useState(false);
@@ -40,17 +40,17 @@ function Login({ handleOtpFlow }) {
         toast({
           title: data.message,
           description: "",
-          duration: 3000,
+          duration: 1000,
           className: "bg-emerald-700 text-white",
         });
         localStorage.setItem("user", JSON.stringify(data.user));
-        handleOtpFlow(data.user.email, data.user.verificationToken);
+        // handleOtpFlow(data.user.email, data.user.verificationToken);
       } else {
         toast({
           title: "Error",
           description:
             data.message || "Something went wrong. Please try again.",
-          duration: 3000,
+          duration: 1000,
           variant: "destructive",
         });
       }
@@ -58,7 +58,7 @@ function Login({ handleOtpFlow }) {
       toast({
         title: "Network error.",
         description: "Please try again later.",
-        duration: 3000,
+        duration: 1000,
         className: "bg-yellow-500 text-white",
       });
     } finally {

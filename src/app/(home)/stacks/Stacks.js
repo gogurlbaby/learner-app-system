@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import stacks from "../../../json/stacks.json";
+import stacks from "../../learner/json/stacks.json";
 import "./stacks.css";
 
 function Stacks() {
