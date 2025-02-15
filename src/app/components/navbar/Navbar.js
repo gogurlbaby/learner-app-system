@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { Navbar, Container, Nav, Offcanvas, Dropdown } from "react-bootstrap";
 import { GraduationCap, LogIn } from "lucide-react";
-import CustomPopover from "../popover/CustomPopover";
+import CustomPopover from "../custom-popover/CustomPopover";
 import { useRouter } from "next/navigation";
-import "./navbar.css";
+import "../../styles/navbar.css";
 
 function NavBar() {
   const [user, setUser] = useState(null);
