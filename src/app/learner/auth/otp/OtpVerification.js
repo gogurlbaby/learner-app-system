@@ -35,14 +35,22 @@ function OtpVerification({ email, onOtpSuccess }) {
       console.log("Verification Response:", data);
 
       if (response.ok) {
+        const existingUser = JSON.parse(localStorage.getItem("user")) || {};
+        const verifiedUser = {
+          name: existingUser.name || "",
+          email: data.User.email,
+        };
+
+        localStorage.setItem("user", JSON.stringify(verifiedUser));
+
+        console.log("User stored after signup:", verifiedUser);
         toast({
           title: "OTP Verified Successfully",
           description: data.message,
           duration: 3000,
           className: "bg-emerald-700 text-white",
         });
-        const userData = { name: "John Doe" };
-        onOtpSuccess(userData);
+        onOtpSuccess(verifiedUser);
       } else {
         toast({
           title: "Invalid or expired token.",

@@ -47,7 +47,18 @@ function SignUp({ handleOtpFlow }) {
           duration: 1000,
           className: "bg-emerald-700 text-white",
         });
-        localStorage.setItem("user", JSON.stringify(data.user));
+        const userData = data.user;
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: userData.name,
+            email: userData.email,
+          })
+        );
+        console.log(
+          "User stored after signup:",
+          JSON.parse(localStorage.getItem("user"))
+        );
         handleOtpFlow(data.user.email, data.user.verificationToken);
       } else {
         toast({

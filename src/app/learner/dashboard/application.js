@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/button/Button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "../../styles/application.css";
@@ -9,7 +9,35 @@ import GreyButton from "../../components/button/GreyButton";
 import { useRouter } from "next/navigation";
 
 function Application({ onStartRegistration }) {
+  const [applicationData, setApplicationData] = useState(null);
+  const user = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchApplicationData = async () => {
+      if (!user.email) return;
+
+      try {
+        const res = await fetch(
+          `https://tmp-se-project.azurewebsites.net/api/learners/${user.email}`
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          setApplicationData(data.learner);
+        } else {
+          console.log("Error fetching application:", data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchApplicationData();
+  }, [user.email]);
+
+  // if (!applicationData) {
+  //   return <p>Loading application details...</p>;
+  // }
 
   const [useDefaultClass, setUseDefaultClass] = useState(false);
   const getClassName = (index) => {
@@ -29,7 +57,7 @@ function Application({ onStartRegistration }) {
             Program
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            Data Science
+            {applicationData.course}
           </span>
         </div>
 
@@ -40,7 +68,7 @@ function Application({ onStartRegistration }) {
             Date registered
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            2024/11/16
+            {new Date(applicationData.createdAt).toLocaleDateString()}
           </span>
         </div>
 
@@ -51,7 +79,7 @@ function Application({ onStartRegistration }) {
             Status
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            Registered
+            {applicationData.status || "Pending"}
           </span>
         </div>
         <hr className="xl:block xl:bg-[#E6E6E6] xl:w-[0.2rem] xl:h-[5rem] hidden" />
@@ -59,7 +87,7 @@ function Application({ onStartRegistration }) {
         <div className="xl:flex xl:flex-col flex gap-[0.5rem]">
           <h4 className="text-[#999] text-base font-sans font-normal">Paid</h4>
           <span className="text-black text-base font-sans font-normal">
-            $150.00
+            ${applicationData.amount || "N/A"}
           </span>
         </div>
       </div>

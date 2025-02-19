@@ -14,14 +14,34 @@ function NavBar() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setTimeout(() => setUser(JSON.parse(storedUser)), 100);
+      setUser(JSON.parse(storedUser));
     }
+
+    const handleStorageChange = () => {
+      const updatedUser = localStorage.getItem("user");
+      setUser(updatedUser ? JSON.parse(updatedUser) : null);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   const handleLogin = (userData) => {
-    console.log("User Logged In:", userData);
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+    const storedUser = localStorage.getItem("user");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : {};
+
+    const newUserData = {
+      name: userData.name || parsedUser.name || "John Doe",
+      email: userData.email || parsedUser.email || "",
+    };
+
+    localStorage.setItem("user", JSON.stringify(newUserData));
+
+    console.log("User stored in localStorage:", newUserData);
+    setUser(newUserData);
   };
 
   const handleLogout = () => {
@@ -92,7 +112,7 @@ function NavBar() {
                     </Dropdown.Menu>
                   </Dropdown>
                 ) : (
-                  <CustomPopover handleLogin={handleLogin} user={user} />
+                  <CustomPopover handleLogin={handleLogin} />
                 )}
               </Nav>
             </Offcanvas.Body>

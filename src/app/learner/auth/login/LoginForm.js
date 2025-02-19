@@ -7,7 +7,7 @@ import Button from "../../../components/button/Button";
 import CustomForm from "@/app/components/custom-form/CustomForm";
 import { useToast } from "../../../../hooks/use-toast";
 
-function Login({ handleOtpFlow }) {
+function Login({ handleLogin }) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -36,6 +36,8 @@ function Login({ handleOtpFlow }) {
         },
       });
       const data = await res.json();
+      console.log("api response", data);
+
       if (res.ok) {
         toast({
           title: data.message,
@@ -43,8 +45,19 @@ function Login({ handleOtpFlow }) {
           duration: 1000,
           className: "bg-emerald-700 text-white",
         });
-        localStorage.setItem("user", JSON.stringify(data.user));
-        // handleOtpFlow(data.user.email, data.user.verificationToken);
+        const userData = data.user;
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: userData.name,
+            email: userData.email,
+          })
+        );
+        console.log(
+          "User stored after signup:",
+          JSON.parse(localStorage.getItem("user"))
+        );
+        handleLogin(data.user);
       } else {
         toast({
           title: "Error",
@@ -93,7 +106,7 @@ function Login({ handleOtpFlow }) {
         submitButton={(isSubmitting) => (
           <Button
             type="submit"
-            Text={loading ? "Verifying Login..." : "Login"}
+            Text={loading ? "Loggin in..." : "Login"}
             Icon={<ChevronRight size={25} />}
             disabled={isSubmitting}
           />

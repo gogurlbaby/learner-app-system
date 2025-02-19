@@ -17,6 +17,7 @@ function CustomPopover({ handleLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [activeForm, setActiveForm] = useState("login");
   const [userEmail, setUserEmail] = useState("");
+  const [resetToken, setResetToken] = useState("");
   const [otp, setOtp] = useState("");
   const [popoverOpen, setPopoverOpen] = useState(false);
 
@@ -30,6 +31,14 @@ function CustomPopover({ handleLogin }) {
   const handleOtpSuccess = (userData) => {
     handleLogin(userData);
     setPopoverOpen(false);
+  };
+
+  const handleToggle = (form = "login", email = "", token = "") => {
+    setActiveForm(form);
+    setUserEmail(email);
+    if (token) setResetToken(token);
+    setIsSignUp(form === "signup");
+    setPopoverOpen(true);
   };
 
   const renderForm = () => {
@@ -50,24 +59,19 @@ function CustomPopover({ handleLogin }) {
           />
         );
       case "forgotPassword":
-        return <ForgotPassword onSwitch={() => setActiveForm("login")} />;
+        return <ForgotPassword onSwitch={handleToggle} />;
       case "resetPassword":
-        return <ResetPassword onSwitch={() => setActiveForm("login")} />;
+        return (
+          <ResetPassword resetToken={resetToken} onSwitch={setActiveForm} />
+        );
       default:
         return (
           <Login
             onSwitch={() => setActiveForm("signup")}
-            // handleOtpFlow={handleOtpFlow}
+            handleLogin={handleLogin}
           />
         );
     }
-  };
-
-  const handleToggle = (form = "login", email = "") => {
-    setActiveForm(form);
-    setUserEmail(email);
-    setIsSignUp(form === "signup");
-    setPopoverOpen(true);
   };
 
   return (

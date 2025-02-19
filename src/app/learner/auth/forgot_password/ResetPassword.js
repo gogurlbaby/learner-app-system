@@ -1,19 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronRight, LockKeyhole } from "lucide-react";
 import * as Yup from "yup";
 import Button from "../../../components/button/Button";
 import CustomForm from "../../../components/custom-form/CustomForm";
 import { useToast } from "../../../../hooks/use-toast";
+import { useSearchParams } from "next/navigation";
 
-// import { useRouter } from "next/router";
-
-function ResetPassword() {
-  //   const router = useRouter();
-  //   const { token } = router.query;
+function ResetPassword({ token: propToken, onSwitch }) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+
+  const token = propToken || searchParams.get("token");
+
+  useEffect(() => {
+    if (!token) {
+      toast({
+        title: "Error",
+        description: "Invalid or missing reset token.",
+        duration: 1000,
+        variant: "destructive",
+      });
+    }
+  }, [token]);
 
   const initialValues = { password: "", confirmPassword: "" };
 
@@ -27,33 +38,39 @@ function ResetPassword() {
   });
 
   const handleResetPassword = async (values, { setSubmitting }) => {
-    const apiUrl =
-      "https://tmp-se-project.azurewebsites.net/api/user/auth/reset-password/token";
+    console.log("🚀 Reset password function triggered", values);
+    console.log("🔑 Reset Token Being Sent:", token);
+
+    const apiUrl = `https://tmp-se-project.azurewebsites.net/api/user/auth/reset-password/${token}`;
 
     setLoading(true);
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
-        body: JSON.stringify({ ...values, token }),
+        body: JSON.stringify(values),
         headers: {
           "Content-Type": "application/json",
         },
       });
 
       const data = await res.json();
+      console.log("API Response:", data);
+
       if (res.ok) {
         toast({
-          title: data.message,
-          description: "You can now log in with your new password.",
+          title: "Success",
+          description: "Your password has been reset successfully!",
           duration: 3000,
           className: "bg-emerald-700 text-white",
         });
-        // setTimeout(() => router.push("/login"), 2000);
+
+        setTimeout(() => {
+          if (onSwitch) onSwitch("login");
+        }, 1500);
       } else {
         toast({
           title: "Error",
-          description:
-            data.message || "Failed to reset password. Please try again.",
+          description: data.message || "Failed to reset password. Try again.",
           duration: 3000,
           variant: "destructive",
         });

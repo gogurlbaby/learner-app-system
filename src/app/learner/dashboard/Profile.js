@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation";
 
 function Profile() {
   const [showPassword, setShowPassword] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const user = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
 
   const oldToNewPasswordSchema = Yup.object().shape({
@@ -27,6 +29,33 @@ function Profile() {
       .required("Please enter your new password"),
   });
 
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (!user.email) return;
+
+      try {
+        const res = await fetch(
+          `https://tmp-se-project.azurewebsites.net/api/learners/${user.email}`
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          setProfileData(data.learner);
+        } else {
+          console.log("Error fetching profile:", data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProfileData();
+  }, [user.email]);
+
+  // if (!profileData) {
+  //   return <p>Loading profile details...</p>;
+  // }
+
   return (
     <div className="bg-white xl:pt-[1.5rem] xl:pb-[6.25rem] xl:pl-[3.438rem] pt-[1rem] pb-[6.25rem] rounded-[5px]">
       <div className="xl:flex xl:items-center xl:gap-[2.5rem] mb-[2.813rem]">
@@ -37,10 +66,10 @@ function Profile() {
         />
         <div className="xl:flex xl:flex-col flex gap-[0.5rem]">
           <h4 className="text-[#999] text-base font-sans font-normal">
-            John Doe
+            {profileData.firstname}
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            Johndoe@gamil.com
+            {profileData.email}
           </span>
         </div>
 
@@ -51,7 +80,7 @@ function Profile() {
             Location
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            Kumasi
+            {profileData.location}
           </span>
         </div>
 
@@ -62,7 +91,7 @@ function Profile() {
             Gender
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            Male
+            {profileData.gender}
           </span>
         </div>
         <hr className="xl:block xl:bg-[#E6E6E6] xl:w-[0.2rem] xl:h-[5rem] hidden" />
@@ -70,7 +99,7 @@ function Profile() {
         <div className="xl:flex xl:flex-col flex gap-[0.5rem]">
           <h4 className="text-[#999] text-base font-sans font-normal">Phone</h4>
           <span className="text-black text-base font-sans font-normal">
-            +23341002402
+            {profileData.phone}
           </span>
         </div>
       </div>

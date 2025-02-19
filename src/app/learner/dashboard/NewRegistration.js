@@ -28,11 +28,17 @@ function NewRegistration({ onComplete }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const storedUser = localStorage.getItem("user");
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+  const userEmail = parsedUser?.email || "";
+
+  console.log("Stored user:", parsedUser);
+  console.log("Expected email:", userEmail);
 
   const initialValues = {
     firstname: "",
     lastname: "",
-    email: "",
+    email: userEmail,
     location: "",
     course: "",
     gender: "",
@@ -56,7 +62,16 @@ function NewRegistration({ onComplete }) {
     lastname: Yup.string().required("Last name is required"),
     email: Yup.string()
       .email("Invalid email address")
-      .required("Email Address is required"),
+      .required("Email Address is required")
+      .test("match-email", "Email must match signup email", function (value) {
+        console.log("Entered email:", value); // Debugging
+        console.log("Stored email from localStorage:", userEmail); // Debugging
+        return (
+          value &&
+          userEmail &&
+          value.trim().toLowerCase() === userEmail.trim().toLowerCase()
+        );
+      }),
     location: Yup.string().required("Please add your location"),
     course: Yup.string()
       .oneOf(
@@ -121,13 +136,9 @@ function NewRegistration({ onComplete }) {
           duration: 3000,
           className: "bg-emerald-700 text-white",
         });
-
-        setTimeout(() => {
-          setSubmitting(false);
-          if (onComplete) {
-            onComplete();
-          }
-        }, 1000);
+        if (onComplete) {
+          onComplete();
+        }
       } else {
         throw new Error(
           data.message || "Something went wrong. Please try again."
@@ -239,7 +250,7 @@ function NewRegistration({ onComplete }) {
           validationSchema={newRegistrationSchema}
           onSubmit={handleSubmit}
           fieldSections={fieldSections}
-          submitButton={(isSubmitting, isValid) => (
+          submitButton={(isSubmitting) => (
             <div className="w-full xl:flex xl:flex-row xl:items-center mt-[3.375rem] flex flex-col gap-[1.5rem]">
               <GreyButton
                 Text="Back"
@@ -251,7 +262,7 @@ function NewRegistration({ onComplete }) {
                 type="submit"
                 Text={loading ? "Registering..." : "Register"}
                 Icon={<ChevronRight size={25} />}
-                disabled={isSubmitting || !isValid}
+                disabled={isSubmitting || loading}
               />
             </div>
           )}

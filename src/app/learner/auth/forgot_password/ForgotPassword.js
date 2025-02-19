@@ -7,7 +7,7 @@ import Button from "../../../components/button/Button";
 import CustomForm from "../../../components/custom-form/CustomForm";
 import { useToast } from "../../../../hooks/use-toast";
 
-function ForgotPassword() {
+function ForgotPassword({ onSwitch }) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -33,21 +33,25 @@ function ForgotPassword() {
         },
       });
       const data = await res.json();
-      console.log("reset", data);
+      console.log("Forgot Password API Response:", data);
 
       if (res.ok) {
         toast({
           title: data.message,
           description: "Check your email for the reset link.",
-          duration: 3000,
+          duration: 1000,
           className: "bg-emerald-700 text-white",
         });
+
+        setTimeout(() => {
+          onSwitch("resetPassword", values.email, data.resetPasswordToken);
+        }, 1500);
       } else {
         toast({
           title: "Error",
           description:
             data.message || "Something went wrong. Please try again.",
-          duration: 3000,
+          duration: 1000,
           variant: "destructive",
         });
       }
@@ -55,7 +59,7 @@ function ForgotPassword() {
       toast({
         title: "Network error.",
         description: "Unable to process your request. Try again later.",
-        duration: 3000,
+        duration: 1000,
         className: "bg-yellow-500 text-white",
       });
     } finally {
