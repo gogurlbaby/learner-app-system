@@ -205,7 +205,7 @@ function NewRegistration({ onComplete }) {
         },
         {
           name: "disability",
-          placeholder: "Disabled or not",
+          placeholder: "Disabled",
           icon: UsersRound,
           options: disabilityOptions,
         },

@@ -57,7 +57,8 @@ function Application({ onStartRegistration }) {
             Program
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            {applicationData.course}
+            {/* {applicationData.course} */}
+            Data Science
           </span>
         </div>
 
@@ -68,7 +69,8 @@ function Application({ onStartRegistration }) {
             Date registered
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            {new Date(applicationData.createdAt).toLocaleDateString()}
+            {/* {new Date(applicationData.createdAt).toLocaleDateString()} */}
+            2024/11/16
           </span>
         </div>
 
@@ -79,7 +81,8 @@ function Application({ onStartRegistration }) {
             Status
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            {applicationData.status || "Pending"}
+            {/* {applicationData.status || "Pending"} */}
+            Registered
           </span>
         </div>
         <hr className="xl:block xl:bg-[#E6E6E6] xl:w-[0.2rem] xl:h-[5rem] hidden" />
@@ -87,7 +90,8 @@ function Application({ onStartRegistration }) {
         <div className="xl:flex xl:flex-col flex gap-[0.5rem]">
           <h4 className="text-[#999] text-base font-sans font-normal">Paid</h4>
           <span className="text-black text-base font-sans font-normal">
-            ${applicationData.amount || "N/A"}
+            {/* ${applicationData.amount || "N/A"} */}
+            $150.00
           </span>
         </div>
       </div>

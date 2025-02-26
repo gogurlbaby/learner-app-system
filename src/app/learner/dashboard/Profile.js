@@ -66,10 +66,12 @@ function Profile() {
         />
         <div className="xl:flex xl:flex-col flex gap-[0.5rem]">
           <h4 className="text-[#999] text-base font-sans font-normal">
-            {profileData.firstname}
+            {/* {profileData.firstname} */}
+            John Doe
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            {profileData.email}
+            {/* {profileData.email} */}
+            Johndoe@gamil.com
           </span>
         </div>
 
@@ -80,7 +82,8 @@ function Profile() {
             Location
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            {profileData.location}
+            {/* {profileData.location} */}
+            Kumasi
           </span>
         </div>
 
@@ -91,7 +94,8 @@ function Profile() {
             Gender
           </h4>
           <span className="text-black text-base font-sans font-normal">
-            {profileData.gender}
+            {/* {profileData.gender} */}
+            Male
           </span>
         </div>
         <hr className="xl:block xl:bg-[#E6E6E6] xl:w-[0.2rem] xl:h-[5rem] hidden" />
@@ -99,7 +103,8 @@ function Profile() {
         <div className="xl:flex xl:flex-col flex gap-[0.5rem]">
           <h4 className="text-[#999] text-base font-sans font-normal">Phone</h4>
           <span className="text-black text-base font-sans font-normal">
-            {profileData.phone}
+            {/* {profileData.phone} */}
+            +23341002402
           </span>
         </div>
       </div>
