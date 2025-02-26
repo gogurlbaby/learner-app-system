@@ -11,7 +11,6 @@ import {
   Phone,
   ChevronRight,
 } from "lucide-react";
-import "./register.css";
 
 function Register() {
   const initialValues = {
@@ -71,51 +70,62 @@ function Register() {
     { name: "contact", type: "text", placeholder: "Contact", icon: Phone },
   ];
   return (
-    <div className="w-full h-full flex xl:gap-[9rem]">
-      <div className="register-image-container">
+    <div className="lg:bg-[url(/images/admin/register.svg)] lg:bg-auto lg:bg-no-repeat bg-[linear-gradient(180deg,#01589A_0%,#13A3DF_100%)] w-full h-[200vh] pt-[1.5rem] pb-[6.25rem] px-[1rem]">
+      {/* Mobile */}
+      <div className="lg:pt-[3.75rem] flex justify-between items-center">
         <img
-          src="images/admin/azubi-logo.svg"
+          src="/images/admin/azubi-logo.svg"
           alt=""
-          className="xl:mb-[1.5rem]"
+          className="lg:w-[15%] lg:mb-[1.5rem] w-[30%]"
         />
-        <h4 className="xl:block xl:text-white xl:font-serif xl:font-bold xl:[3rem] xl:leading-[2.5rem] xl:text-left hidden">
-          Create Your Account to Manage and Access the Dashboard Effortlessly.
-        </h4>
-      </div>
-      <div className=" xl:pt-[3.5rem] xl:pb-[5rem] xl:pr-[5rem]">
-        <div className="flex gap-[1.5rem] items-baseline justify-end mb-[2rem]">
-          <p className="text-[#404040] text-[1.25rem] font-sans font-normal leading-[2rem] underline">
+        <div className="flex gap-[1.5rem] items-baseline">
+          <p className="hidden lg:block lg:text-[#404040] lg:text-[1.25rem] lg:font-sans lg:font-normal lg:underline">
             Already have an account?
           </p>
-          <a
-            href="/"
-            className="no-underline bg-[#01589A] py-[0.75rem] px-[1.5rem] text-white flex justify-center items-center gap-[0.5rem] text-base font-semibold rounded-[5px] border border-solid border-[#01589A] hover:bg-[#014273] hover:border-[#014273]"
+          <button
+            type="button"
+            className="lg:bg-[#01589A] lg:text-white lg:border-[#01589A] flex gap-[0.75rem] items-center justify-center py-[0.5rem] px-[1rem] rounded-[5px] bg-[#F5F5F5] border border-solid border-[#F5F5F5] text-base font-semibold font-sans text-[#01589A]"
           >
             Login
-            <ChevronRight size={25} className="text-white" />
-          </a>
+            <ChevronRight size={25} className="lg:text-white text-[#01589A]" />
+          </button>
         </div>
-        <h2 className="text-black font-serif font-bold xl:text-[2.5rem] xl:leading-[3rem] mb-[2rem]">
+      </div>
+      {/* Desktop */}
+      <h4 className="hidden lg:block lg:text-white lg:font-serif lg:font-bold lg:text-[1rem] lg:text-left">
+        Create Your Account to Manage and Access the Dashboard Effortlessly.
+      </h4>
+      <div className="">
+        <h2 className="lg:text-black text-white font-serif font-bold lg:text-[2.5rem] text-center mt-[4.75rem] mb-[2rem]">
           Register to get started
         </h2>
-        <CustomForm
-          initialValues={initialValues}
-          validationSchema={registerSchema}
-          fields={fields}
-          onSubmit={handleSubmit}
-          submitButton={(isSubmitting) => (
-            <GreyButton
-              Text="Create account"
-              type="submit"
-              disabled={isSubmitting}
-              Icon={<ChevronRight size={25} />}
-              text="Create accounts"
-            />
-          )}
-        />
-        <p className="text-black text-base font-normal font-sans text-center mt-[2.5rem]">
-          By confirming your email, you agree to our Terms of Service  and that
-          you have read and understood our Privacy Policy .
+        <div className="lg:bg-none lg:border-none lg:p-0 bg-white rounded-lg p-[0.5rem] border border-solid border-white">
+          <CustomForm
+            initialValues={initialValues}
+            validationSchema={registerSchema}
+            fields={fields}
+            onSubmit={handleSubmit}
+            submitButton={(isSubmitting) => (
+              <GreyButton
+                Text="Create account"
+                type="submit"
+                disabled={isSubmitting}
+                Icon={<ChevronRight size={25} />}
+                text="Create accounts"
+              />
+            )}
+          />
+        </div>
+        <p className="lg:text-black text-white text-base font-normal font-sans text-center mt-[2.5rem]">
+          By confirming your email, you agree to our 
+          <a href="" className="lg:text-black text-white underline">
+            Terms of Service
+          </a>{" "}
+           and that you have read and understood our 
+          <a href="" className="lg:text-black text-white underline">
+            Privacy Policy
+          </a>
+          .
         </p>
       </div>
     </div>
