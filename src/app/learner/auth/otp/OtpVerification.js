@@ -134,7 +134,7 @@ function OtpVerification({ email, onOtpSuccess }) {
               numInputs={6}
               inputStyle={{
                 width: "3rem",
-                height: "3.375rem",
+                height: "3rem",
                 fontSize: "1.5rem",
                 textAlign: "center",
                 backgroundColor: "#F5F5F5",

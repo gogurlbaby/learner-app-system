@@ -63,7 +63,6 @@ function NavBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Offcanvas
             id="responsive-navbar-nav"
-            aria-labelledby=""
             placement="end"
             style={{ width: "270px" }}
           >
