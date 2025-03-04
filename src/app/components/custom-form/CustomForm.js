@@ -79,7 +79,7 @@ function CustomForm({
       onSubmit={onSubmit}
     >
       {({ errors, touched, handleChange, isSubmitting }) => (
-        <Form>
+        <Form className="w-full">
           {showGoogleAuth && (
             <div>
               <GoogleLogin

@@ -36,20 +36,6 @@
   color: #666 !important;
 }
 
-.offcanvas.show {
-  z-index: 1040;
-}
-
-.popover {
-  z-index: 1050 !important;
-}
-
-@media (max-width: 767px) {
-  .popover {
-    max-width: 270px !important;
-  }
-}
-
 @media (min-width: 768px) {
   .menu-container {
     flex-direction: row;
