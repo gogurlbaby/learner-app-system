@@ -90,7 +90,7 @@ function CustomPopover({ handleLogin }) {
         </PopoverTrigger>
         <PopoverContent
           style={{ maxWidth: "300px" }}
-          className="w-full border border-solid border-[#01589a] rounded-[5px] z-[1050]"
+          className="w-full border border-solid border-[#01589a] rounded-[5px] z-[1050] bg-white"
         >
           {(activeForm === "login" || activeForm === "signup") && (
             <div className="text-black text-[2.5rem] font-bold font-serif leading-[3rem] text-center mb-[2rem]">

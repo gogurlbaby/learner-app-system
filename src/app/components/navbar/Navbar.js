@@ -64,7 +64,7 @@ function NavBar() {
           <Navbar.Offcanvas
             id="responsive-navbar-nav"
             placement="end"
-            style={{ width: "270px" }}
+            className="w-full"
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title> </Offcanvas.Title>
