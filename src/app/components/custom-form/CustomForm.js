@@ -17,7 +17,7 @@ const FormField = ({
 }) => {
   return (
     <div>
-      <div className="relative bg-[#F5F5F5] border border-solid border-[#E6E6E6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
+      <div className="relative bg-[#F5F5F5] border border-solid border-[#E6E6E6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem] z-[2001] pointer-events-auto">
         {Icon && <Icon size={25} className="text-[#666666]" />}
         {options ? (
           <Field

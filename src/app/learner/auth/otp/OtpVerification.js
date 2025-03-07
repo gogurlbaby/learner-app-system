@@ -133,8 +133,8 @@ function OtpVerification({ email, onOtpSuccess }) {
               onChange={(otp) => setFieldValue("otp", otp)}
               numInputs={6}
               inputStyle={{
-                width: "3rem",
-                height: "3rem",
+                width: "3.5rem",
+                height: "3.375rem",
                 fontSize: "1.5rem",
                 textAlign: "center",
                 backgroundColor: "#F5F5F5",

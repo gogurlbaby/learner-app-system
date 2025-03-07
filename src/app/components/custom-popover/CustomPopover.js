@@ -76,22 +76,16 @@ function CustomPopover({ handleLogin }) {
 
   return (
     <div>
-      {!popoverOpen && (
-        <button
-          className="text-[#01589a] border-1 border-solid border-[#01589a] rounded-[5px] font-semibold font-sans text-base flex gap-[0.5rem] items-center py-[0.5rem] px-[1.5rem] hover:bg-[#01589a] hover:text-white cursor-pointer"
-          onClick={() => setPopoverOpen(true)}
-        >
-          Login <LogIn />
-        </button>
-      )}
       <Popover modal open={popoverOpen} onOpenChange={setPopoverOpen}>
         <PopoverTrigger asChild>
-          <div></div>
+          <button
+            className="text-[#01589a] border-1 border-solid border-[#01589a] rounded-[5px] font-semibold font-sans text-base flex gap-[0.5rem] items-center py-[0.5rem] px-[1.5rem] hover:bg-[#01589a] hover:text-white cursor-pointer"
+            onClick={() => setPopoverOpen(true)}
+          >
+            Login <LogIn />
+          </button>
         </PopoverTrigger>
-        <PopoverContent
-          style={{ maxWidth: "300px" }}
-          className="w-full border border-solid border-[#01589a] rounded-[5px] z-[1050] bg-white"
-        >
+        <PopoverContent className="w-full border border-solid border-[#01589a] rounded-[5px] z-[2000] pointer-events-auto p-4">
           {(activeForm === "login" || activeForm === "signup") && (
             <div className="text-black text-[2.5rem] font-bold font-serif leading-[3rem] text-center mb-[2rem]">
               {isSignUp ? "Sign Up" : "Login"}

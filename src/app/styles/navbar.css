@@ -36,6 +36,14 @@
   color: #666 !important;
 }
 
+.offcanvas-backdrop {
+  pointer-events: none !important;
+}
+
+.popover-backdrop {
+  pointer-events: none !important;
+}
+
 @media (min-width: 768px) {
   .menu-container {
     flex-direction: row;
