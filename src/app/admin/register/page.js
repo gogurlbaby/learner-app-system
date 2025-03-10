@@ -14,8 +14,8 @@ import {
 
 function Register() {
   const initialValues = {
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -23,8 +23,8 @@ function Register() {
   };
 
   const registerSchema = Yup.object().shape({
-    firstname: Yup.string().required("First name is required"),
-    lastname: Yup.string().required("Last name is required"),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email Address is required"),
@@ -37,98 +37,151 @@ function Register() {
     contact: Yup.string().required("Contact is required"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    const apiUrl =
+      "https://tmp-se-project.azurewebsites.net//api/admin/auth/signup";
+
+    try {
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const fields = [
+  const fieldSections = [
     {
-      name: "firstname",
-      type: "text",
-      placeholder: "First Name",
-      icon: UserRound,
+      isGrid: true,
+      fields: [
+        {
+          name: "first_name",
+          type: "text",
+          placeholder: "First Name",
+          icon: UserRound,
+        },
+        {
+          name: "last_name",
+          type: "text",
+          placeholder: "Last Name",
+          icon: UserRound,
+        },
+      ],
     },
     {
-      name: "lastname",
-      type: "text",
-      placeholder: "Last Name",
-      icon: UserRound,
-    },
-    { name: "email", type: "email", placeholder: "Email", icon: Mail },
-    {
-      name: "password",
-      type: "password",
-      placeholder: "Password",
-      icon: LockKeyhole,
+      isGrid: false,
+      fields: [
+        { name: "email", type: "email", placeholder: "Email", icon: Mail },
+      ],
     },
     {
-      name: "confirmPassword",
-      type: "password",
-      placeholder: "Confirm Password",
-      icon: LockKeyhole,
+      isGrid: true,
+      fields: [
+        {
+          name: "password",
+          type: "password",
+          placeholder: "Password",
+          icon: LockKeyhole,
+        },
+        {
+          name: "confirmPassword",
+          type: "password",
+          placeholder: "Confirm Password",
+          icon: LockKeyhole,
+        },
+      ],
     },
-    { name: "contact", type: "text", placeholder: "Contact", icon: Phone },
+    {
+      isGrid: false,
+      fields: [
+        { name: "contact", type: "text", placeholder: "Contact", icon: Phone },
+      ],
+    },
   ];
   return (
-    <div className="lg:bg-[url(/images/admin/register.svg)] lg:bg-auto lg:bg-no-repeat bg-[linear-gradient(180deg,#01589A_0%,#13A3DF_100%)] w-full h-[200vh] pt-[1.5rem] pb-[6.25rem] px-[1rem]">
-      {/* Mobile */}
-      <div className="lg:pt-[3.75rem] flex justify-between items-center">
-        <img
-          src="/images/admin/azubi-logo.svg"
-          alt=""
-          className="lg:w-[15%] lg:mb-[1.5rem] w-[30%]"
-        />
-        <div className="flex gap-[1.5rem] items-baseline">
-          <p className="hidden lg:block lg:text-[#404040] lg:text-[1.25rem] lg:font-sans lg:font-normal lg:underline">
-            Already have an account?
-          </p>
+    <>
+      {/* Left Section */}
+      <div className="xl:flex xl:gap-x-[9rem] xl:h-screen h-[150vh] xl:bg-[url(/images/admin/register.svg)] xl:bg-contain xl:bg-no-repeat bg-[linear-gradient(180deg,#01589A_0%,#13A3DF_100%)]">
+        {/* Mobile */}
+        <div className="xl:hidden flex justify-between items-center pt-[1.5rem] px-[1rem]">
+          <img src="/images/admin/azubi-logo.svg" alt="" className="w-[30%]" />
           <button
             type="button"
-            className="lg:bg-[#01589A] lg:text-white lg:border-[#01589A] flex gap-[0.75rem] items-center justify-center py-[0.5rem] px-[1rem] rounded-[5px] bg-[#F5F5F5] border border-solid border-[#F5F5F5] text-base font-semibold font-sans text-[#01589A]"
+            className="flex gap-[0.75rem] items-center justify-center py-[0.5rem] px-[1rem] rounded-[5px] bg-[#F5F5F5] border border-solid border-[#F5F5F5] text-base font-semibold font-sans text-[#01589A]"
           >
             Login
-            <ChevronRight size={25} className="lg:text-white text-[#01589A]" />
+            <ChevronRight size={25} className="text-[#01589A]" />
           </button>
         </div>
-      </div>
-      {/* Desktop */}
-      <h4 className="hidden lg:block lg:text-white lg:font-serif lg:font-bold lg:text-[1rem] lg:text-left">
-        Create Your Account to Manage and Access the Dashboard Effortlessly.
-      </h4>
-      <div className="">
-        <h2 className="lg:text-black text-white font-serif font-bold lg:text-[2.5rem] text-center mt-[4.75rem] mb-[2rem]">
-          Register to get started
-        </h2>
-        <div className="lg:bg-none lg:border-none lg:p-0 bg-white rounded-lg p-[0.5rem] border border-solid border-white">
-          <CustomForm
-            initialValues={initialValues}
-            validationSchema={registerSchema}
-            fields={fields}
-            onSubmit={handleSubmit}
-            submitButton={(isSubmitting) => (
-              <GreyButton
-                Text="Create account"
-                type="submit"
-                disabled={isSubmitting}
-                Icon={<ChevronRight size={25} />}
-                text="Create accounts"
-              />
-            )}
+
+        {/* Desktop */}
+        <div className="hidden xl:block xl:pt-[3.75rem] xl:px-[2rem]">
+          <img
+            src="/images/admin/azubi-logo.svg"
+            alt=""
+            className="xl:w-[30%] xl:mb-[1.5rem]"
           />
+          <h4 className="xl:text-white xl:font-serif xl:font-bold xl:text-[2rem] xl:max-w-md">
+            Create Your Account to Manage and Access the Dashboard Effortlessly.
+          </h4>
         </div>
-        <p className="lg:text-black text-white text-base font-normal font-sans text-center mt-[2.5rem]">
-          By confirming your email, you agree to our 
-          <a href="" className="lg:text-black text-white underline">
-            Terms of Service
-          </a>{" "}
-           and that you have read and understood our 
-          <a href="" className="lg:text-black text-white underline">
-            Privacy Policy
-          </a>
-          .
-        </p>
+
+        {/*Form */}
+        <div className="xl:block xl:pt-[3.75rem] xl:pr-[4.688rem] pt-[4.688rem] pb-[6.25rem] px-[1rem]">
+          <div className="hidden xl:flex xl:justify-end items-baseline xl:gap-[1.5rem] xl:mb-[1rem]">
+            <p className="xl:text-[#404040] xl:text-[1.25rem] xl:font-sans xl:font-normal xl:underline">
+              Already have an account?
+            </p>
+            <button
+              type="button"
+              className="xl:bg-[#01589A] xl:text-white xl:border-[#01589A] xl:flex xl:gap-[0.75rem] xl:items-center xl:justify-center xl:py-[0.5rem] xl:px-[1rem] xl:rounded-[5px] xl:font-semibold xl:font-sans"
+            >
+              Login
+              <ChevronRight size={25} className="xl:text-white" />
+            </button>
+          </div>
+          <h2 className="xl:text-left xl:text-[#000] text-[#fff] font-serif font-bold text-[2rem] text-center mb-[2rem]">
+            Register to get started
+          </h2>
+          <div className="xl:border-none xl:rounded-none bg-white rounded-xl p-[0.5rem] border border-solid border-white">
+            <CustomForm
+              initialValues={initialValues}
+              validationSchema={registerSchema}
+              fieldSections={fieldSections}
+              onSubmit={handleSubmit}
+              formType="admin"
+              submitButton={(isSubmitting) => (
+                <div className="mt-3">
+                  <GreyButton
+                    Text="Create account"
+                    type="submit"
+                    disabled={isSubmitting}
+                    Icon={<ChevronRight size={25} />}
+                  />
+                </div>
+              )}
+            />
+          </div>
+          <p className="xl:text-[#000] text-[#fff] text-base font-normal font-sans text-center mt-[2.5rem]">
+            By confirming your email, you agree to our 
+            <a href="" className="xl:text-[#000] text-[#fff] underline">
+              Terms of Service
+            </a>{" "}
+             and that you have read and understood our 
+            <a href="" className="xl:text-[#000] text-[#fff] underline">
+              Privacy Policy
+            </a>
+            .
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

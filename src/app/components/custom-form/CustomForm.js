@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { LucideChevronDown } from "lucide-react";
+import { LucideChevronDown, Check, CircleAlert } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
@@ -14,10 +14,24 @@ const FormField = ({
   touched,
   handleChange,
   as,
+  formType,
 }) => {
+  const isValid = touched[name] && !errors[name];
+  const isInvalid = touched[name] && errors[name];
+
+  const borderStyle =
+    formType === "admin"
+      ? isValid
+        ? "border-green-500 bg-green-100"
+        : isInvalid
+        ? "border-red-500 bg-red-100"
+        : "border-b border-[#01589A]"
+      : "border border-solid border-[#E6E6E6]";
   return (
     <div>
-      <div className="relative bg-[#F5F5F5] border border-solid border-[#E6E6E6] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
+      <div
+        className={`${borderStyle} relative bg-[#F5F5F5] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]`}
+      >
         {Icon && <Icon size={25} className="text-[#666666]" />}
         {options ? (
           <Field
@@ -56,6 +70,9 @@ const FormField = ({
             className="absolute right-[0.75rem] text-[#666] pointer-events-none"
           />
         )}
+        {isValid && <Check size={20} className="text-[#77C053]" />}
+
+        {isInvalid && <CircleAlert size={20} className="text-[#A61D24]" />}
       </div>
       {errors[name] && touched[name] && (
         <div className="text-red-500 text-base">{errors[name]}</div>
@@ -71,6 +88,7 @@ function CustomForm({
   fieldSections,
   submitButton,
   showGoogleAuth = false,
+  formType,
 }) {
   return (
     <Formik
@@ -119,6 +137,7 @@ function CustomForm({
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange}
+                      formType={formType}
                     />
                   ))}
                 </div>
@@ -135,6 +154,7 @@ function CustomForm({
                   errors={errors}
                   touched={touched}
                   handleChange={handleChange}
+                  formType={formType}
                 />
               ))}
           {submitButton ? (
