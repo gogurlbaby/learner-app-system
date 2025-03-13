@@ -5,8 +5,10 @@ import CustomForm from "../../components/custom-form/CustomForm";
 import GreyButton from "../../components/button/GreyButton";
 import * as Yup from "yup";
 import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 function Login() {
+  const router = useRouter();
   const initialValues = {
     email: "",
     password: "",
@@ -35,6 +37,13 @@ function Login() {
       });
       const data = await res.json();
       console.log(data);
+
+      if (res.ok) {
+        localStorage.setItem("adminUser", JSON.stringify(data));
+        router.push("/admin/dashboard");
+      } else {
+        console.log("Login Failed", data);
+      }
     } catch (error) {
       console.log(error);
     }

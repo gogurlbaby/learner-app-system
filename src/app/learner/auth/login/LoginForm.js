@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
 import Button from "../../../components/button/Button";
-import CustomForm from "@/app/components/custom-form/CustomForm";
+import CustomForm from "../../../components/custom-form/CustomForm";
 import { useToast } from "../../../../hooks/use-toast";
 
 function Login({ handleLogin }) {
