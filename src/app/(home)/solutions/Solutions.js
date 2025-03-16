@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import solutions from "../../learner/json/solutions.json";
+import solutions from "../../components/json/solutions.json";
 
 function Solutions() {
   return (

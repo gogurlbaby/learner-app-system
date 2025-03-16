@@ -1,33 +1,38 @@
 "use client";
 
 import React, { useState } from "react";
-import Theme from "../components/theme";
-import CustomForm from "../../components/custom-form/CustomForm";
+import Theme from "../../components/theme";
+import CustomForm from "../../../components/custom-form/CustomForm";
 import * as Yup from "yup";
 import {
   UserRound,
-  Clock,
+  UsersRound,
+  MapPin,
   CircleDollarSign,
   Image,
-  GlobeLock,
+  Mail,
   GraduationCap,
   Phone,
   ChevronRight,
 } from "lucide-react";
-import GreyButton from "../../components/button/GreyButton";
-import Button from "../../components/button/Button";
-import selectProgramOptions from "../../learner/json/home-register/course_module.json";
-import genderOptions from "../../learner/json/home-register/genderOptions.json";
-import disabilityOptions from "../../learner/json/home-register/disability.json";
+import GreyButton from "../../../components/button/GreyButton";
+import Button from "../../../components/button/Button";
+import selectProgramOptions from "../../../components/json/home-register/course_module.json";
+import genderOptions from "../../../components/json/home-register/genderOptions.json";
+import disabilityOptions from "../../../components/json/home-register/disability.json";
 
-function CreateCourse({ onCourseCreated }) {
+function CreateLearners({ onLearnersCreated }) {
   const [loading, setLoading] = useState(false);
   const initialValues = {
-    courseTitle: "",
-    price: "",
-    instructor: "",
-    duration: "",
-    stacks: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+    selectProgram: "",
+    gender: "",
+    location: "",
+    phone: "",
+    disability: "",
+    amount: "",
     uploadImage: "",
     description: "",
   };
@@ -40,14 +45,35 @@ function CreateCourse({ onCourseCreated }) {
   ];
   const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
-  const createCourseSchema = Yup.object().shape({
-    courseTitle: Yup.string().required("Please add Course Title"),
-    price: Yup.number()
+  const createLearnersSchema = Yup.object().shape({
+    firstname: Yup.string().required("First name is required"),
+    lastname: Yup.string().required("Last name is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email Address is required"),
+    selectProgram: Yup.string()
+      .oneOf(
+        selectProgramOptions.map((option) => option.value),
+        "Invalid program"
+      )
+      .required("Please select a program"),
+    gender: Yup.string()
+      .oneOf(
+        genderOptions.map((option) => option.value),
+        "Invalid gender"
+      )
+      .required("Gender is required"),
+    location: Yup.string().required("Please add your location"),
+    phone: Yup.string().required("Your phone number is required").length(10),
+    disability: Yup.string()
+      .oneOf(
+        disabilityOptions.map((option) => option.value),
+        "Invalid"
+      )
+      .required("Kindly choose if you have a disability or not"),
+    amount: Yup.number()
       .typeError("Amount must be a number")
       .required("Please enter an amount"),
-    instructor: Yup.string().required("Please add instructor"),
-    duration: Yup.string().required("Please choose duration"),
-    stacks: Yup.string().required("Please add stacks"),
     uploadImage: Yup.mixed().required("Image is required"),
     // .test(
     //   "fileSize",
@@ -62,7 +88,7 @@ function CreateCourse({ onCourseCreated }) {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const apiUrl = "https://tmp-se-project.azurewebsites.net/api/course";
+    const apiUrl = "https://tmp-se-project.azurewebsites.net/api/learners";
     const token = localStorage.getItem("authToken");
 
     if (!token) {
@@ -84,11 +110,11 @@ function CreateCourse({ onCourseCreated }) {
       });
 
       const data = await res.json();
-      console.log("Course Response", data);
+      console.log("Learners Response", data);
 
       if (res.ok) {
-        onCourseCreated(data);
-      } else console.log("Failed to create course", data);
+        onLearnersCreated(data);
+      } else console.log("Failed to create learners", data);
     } catch (error) {
       console.log("Error", error);
     } finally {
@@ -102,16 +128,51 @@ function CreateCourse({ onCourseCreated }) {
       isGrid: true,
       fields: [
         {
-          name: "courseTitle",
+          name: "firstname",
           type: "text",
-          placeholder: "Course Title",
-          icon: GraduationCap,
+          placeholder: "First name",
+          icon: UserRound,
         },
         {
-          name: "price",
-          type: "number",
-          placeholder: "Price",
-          icon: CircleDollarSign,
+          name: "lastname",
+          type: "text",
+          placeholder: "Last name",
+          icon: UserRound,
+        },
+      ],
+    },
+    {
+      isGrid: false,
+      fields: [
+        { name: "email", type: "email", placeholder: "Email", icon: Mail },
+      ],
+    },
+    {
+      isGrid: true,
+      fields: [
+        {
+          name: "selectProgram",
+          placeholder: "Select Program",
+          icon: GraduationCap,
+          options: selectProgramOptions,
+        },
+        {
+          name: "gender",
+          placeholder: "Gender",
+          icon: UserRound,
+          options: genderOptions,
+        },
+        {
+          name: "location",
+          type: "text",
+          placeholder: "Location",
+          icon: MapPin,
+        },
+        {
+          name: "phone",
+          type: "text",
+          placeholder: "Phone",
+          icon: Phone,
         },
       ],
     },
@@ -119,22 +180,16 @@ function CreateCourse({ onCourseCreated }) {
       isGrid: false,
       fields: [
         {
-          name: "instructor",
-          type: "text",
-          placeholder: "Instructor",
-          icon: UserRound,
+          name: "disability",
+          placeholder: "Disabled",
+          icon: UsersRound,
+          options: disabilityOptions,
         },
         {
-          name: "duration",
-          type: "text",
-          placeholder: "Duration",
-          icon: Clock,
-        },
-        {
-          name: "stacks",
-          type: "text",
-          placeholder: "Stacks",
-          icon: GlobeLock,
+          name: "amount",
+          type: "number",
+          placeholder: "Amount",
+          icon: CircleDollarSign,
         },
         {
           name: "uploadImage",
@@ -158,13 +213,13 @@ function CreateCourse({ onCourseCreated }) {
       </div>
       <div className="mt-[3.375rem] ">
         <h2 className="text-[#999] font-sans font-semibold font-lg">
-          Courses | <span className="text-black">Create Course</span>
+          Learners | <span className="text-black">Create Learners</span>
         </h2>
 
         <div>
           <CustomForm
             initialValues={initialValues}
-            validationSchema={createCourseSchema}
+            validationSchema={createLearnersSchema}
             onSubmit={handleSubmit}
             fieldSections={fieldSections}
             submitButton={(isSubmitting) => (
@@ -176,7 +231,7 @@ function CreateCourse({ onCourseCreated }) {
                 />
                 <Button
                   type="submit"
-                  Text={loading ? "Creating course..." : "Create course"}
+                  Text={loading ? "Creating learner..." : "Create learner"}
                   Icon={<ChevronRight size={25} />}
                   disabled={loading || isSubmitting}
                 />
@@ -189,4 +244,4 @@ function CreateCourse({ onCourseCreated }) {
   );
 }
 
-export default CreateCourse;
+export default CreateLearners;

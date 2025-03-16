@@ -5,9 +5,9 @@ import { ChevronRight } from "lucide-react";
 import * as Yup from "yup";
 import RegistrationText from "./RegistrationText";
 import Button from "../../components/button/Button";
-import genderOptions from "../../learner/json/home-register/genderOptions.json";
-import disabilityOptions from "../../learner/json/home-register/disability.json";
-import courseModuleOptions from "../../learner/json/home-register/course_module.json";
+import genderOptions from "../../components/json/home-register/genderOptions.json";
+import disabilityOptions from "../../components/json/home-register/disability.json";
+import courseModuleOptions from "../../components/json/home-register/course_module.json";
 import {
   UserRound,
   Mail,

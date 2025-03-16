@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
 import AdminDashboard from "./dashboard/page";
-import Invoices from "./invoices/page";
-import Learners from "./learners/page";
-import Courses from "./courses/page";
-import Report from "./report/page";
+import Invoices from "./dashboard/invoices/page";
+import Learners from "./dashboard/learners/page";
+import Courses from "./dashboard/courses/page";
+import Report from "./dashboard/report/page";
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();

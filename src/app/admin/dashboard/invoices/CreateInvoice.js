@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Theme from "../components/theme";
-import CustomForm from "../../components/custom-form/CustomForm";
+import Theme from "../../components/theme";
+import CustomForm from "../../../components/custom-form/CustomForm";
 import * as Yup from "yup";
 import {
   UserRound,
@@ -12,11 +12,10 @@ import {
   Pencil,
   ChevronRight,
 } from "lucide-react";
-import selectLearnerOptions from "../json/select_learner.json";
-import statusOptions from "../json/status.json";
-import GreyButton from "../../components/button/GreyButton";
-import Button from "../../components/button/Button";
-import { on } from "events";
+import selectLearnerOptions from "../../../components/json/select_learner.json";
+import statusOptions from "../../../components/json/status.json";
+import GreyButton from "../../../components/button/GreyButton";
+import Button from "../../../components/button/Button";
 
 function CreateInvoice({ onInvoiceCreated }) {
   const [loading, setLoading] = useState(false);

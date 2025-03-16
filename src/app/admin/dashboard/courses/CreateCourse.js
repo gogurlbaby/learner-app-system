@@ -1,39 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
-import Theme from "../components/theme";
-import CustomForm from "../../components/custom-form/CustomForm";
+import Theme from "../../components/theme";
+import CustomForm from "../../../components/custom-form/CustomForm";
 import * as Yup from "yup";
 import {
   UserRound,
-  UsersRound,
-  MapPin,
+  Clock,
   CircleDollarSign,
   Image,
-  Mail,
-  Pencil,
+  GlobeLock,
   GraduationCap,
-  Phone,
   ChevronRight,
 } from "lucide-react";
-import GreyButton from "../../components/button/GreyButton";
-import Button from "../../components/button/Button";
-import selectProgramOptions from "../../learner/json/home-register/course_module.json";
-import genderOptions from "../../learner/json/home-register/genderOptions.json";
-import disabilityOptions from "../../learner/json/home-register/disability.json";
+import GreyButton from "../../../components/button/GreyButton";
+import Button from "../../../components/button/Button";
 
-function CreateLearners({ onLearnersCreated }) {
+function CreateCourse({ onCourseCreated }) {
   const [loading, setLoading] = useState(false);
   const initialValues = {
-    firstname: "",
-    lastname: "",
-    email: "",
-    selectProgram: "",
-    gender: "",
-    location: "",
-    phone: "",
-    disability: "",
-    amount: "",
+    courseTitle: "",
+    price: "",
+    instructor: "",
+    duration: "",
+    stacks: "",
     uploadImage: "",
     description: "",
   };
@@ -46,35 +36,14 @@ function CreateLearners({ onLearnersCreated }) {
   ];
   const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
-  const createLearnersSchema = Yup.object().shape({
-    firstname: Yup.string().required("First name is required"),
-    lastname: Yup.string().required("Last name is required"),
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email Address is required"),
-    selectProgram: Yup.string()
-      .oneOf(
-        selectProgramOptions.map((option) => option.value),
-        "Invalid program"
-      )
-      .required("Please select a program"),
-    gender: Yup.string()
-      .oneOf(
-        genderOptions.map((option) => option.value),
-        "Invalid gender"
-      )
-      .required("Gender is required"),
-    location: Yup.string().required("Please add your location"),
-    phone: Yup.string().required("Your phone number is required").length(10),
-    disability: Yup.string()
-      .oneOf(
-        disabilityOptions.map((option) => option.value),
-        "Invalid"
-      )
-      .required("Kindly choose if you have a disability or not"),
-    amount: Yup.number()
+  const createCourseSchema = Yup.object().shape({
+    courseTitle: Yup.string().required("Please add Course Title"),
+    price: Yup.number()
       .typeError("Amount must be a number")
       .required("Please enter an amount"),
+    instructor: Yup.string().required("Please add instructor"),
+    duration: Yup.string().required("Please choose duration"),
+    stacks: Yup.string().required("Please add stacks"),
     uploadImage: Yup.mixed().required("Image is required"),
     // .test(
     //   "fileSize",
@@ -89,7 +58,7 @@ function CreateLearners({ onLearnersCreated }) {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const apiUrl = "https://tmp-se-project.azurewebsites.net/api/learners";
+    const apiUrl = "https://tmp-se-project.azurewebsites.net/api/course";
     const token = localStorage.getItem("authToken");
 
     if (!token) {
@@ -111,11 +80,11 @@ function CreateLearners({ onLearnersCreated }) {
       });
 
       const data = await res.json();
-      console.log("Learners Response", data);
+      console.log("Course Response", data);
 
       if (res.ok) {
-        onLearnersCreated(data);
-      } else console.log("Failed to create learners", data);
+        onCourseCreated(data);
+      } else console.log("Failed to create course", data);
     } catch (error) {
       console.log("Error", error);
     } finally {
@@ -129,51 +98,16 @@ function CreateLearners({ onLearnersCreated }) {
       isGrid: true,
       fields: [
         {
-          name: "firstname",
+          name: "courseTitle",
           type: "text",
-          placeholder: "First name",
-          icon: UserRound,
-        },
-        {
-          name: "lastname",
-          type: "text",
-          placeholder: "Last name",
-          icon: UserRound,
-        },
-      ],
-    },
-    {
-      isGrid: false,
-      fields: [
-        { name: "email", type: "email", placeholder: "Email", icon: Mail },
-      ],
-    },
-    {
-      isGrid: true,
-      fields: [
-        {
-          name: "selectProgram",
-          placeholder: "Select Program",
+          placeholder: "Course Title",
           icon: GraduationCap,
-          options: selectProgramOptions,
         },
         {
-          name: "gender",
-          placeholder: "Gender",
-          icon: UserRound,
-          options: genderOptions,
-        },
-        {
-          name: "location",
-          type: "text",
-          placeholder: "Location",
-          icon: MapPin,
-        },
-        {
-          name: "phone",
-          type: "text",
-          placeholder: "Phone",
-          icon: Phone,
+          name: "price",
+          type: "number",
+          placeholder: "Price",
+          icon: CircleDollarSign,
         },
       ],
     },
@@ -181,16 +115,22 @@ function CreateLearners({ onLearnersCreated }) {
       isGrid: false,
       fields: [
         {
-          name: "disability",
-          placeholder: "Disabled",
-          icon: UsersRound,
-          options: disabilityOptions,
+          name: "instructor",
+          type: "text",
+          placeholder: "Instructor",
+          icon: UserRound,
         },
         {
-          name: "amount",
-          type: "number",
-          placeholder: "Amount",
-          icon: CircleDollarSign,
+          name: "duration",
+          type: "text",
+          placeholder: "Duration",
+          icon: Clock,
+        },
+        {
+          name: "stacks",
+          type: "text",
+          placeholder: "Stacks",
+          icon: GlobeLock,
         },
         {
           name: "uploadImage",
@@ -214,13 +154,13 @@ function CreateLearners({ onLearnersCreated }) {
       </div>
       <div className="mt-[3.375rem] ">
         <h2 className="text-[#999] font-sans font-semibold font-lg">
-          Learners | <span className="text-black">Create Learners</span>
+          Courses | <span className="text-black">Create Course</span>
         </h2>
 
         <div>
           <CustomForm
             initialValues={initialValues}
-            validationSchema={createLearnersSchema}
+            validationSchema={createCourseSchema}
             onSubmit={handleSubmit}
             fieldSections={fieldSections}
             submitButton={(isSubmitting) => (
@@ -232,7 +172,7 @@ function CreateLearners({ onLearnersCreated }) {
                 />
                 <Button
                   type="submit"
-                  Text={loading ? "Creating learner..." : "Create learner"}
+                  Text={loading ? "Creating course..." : "Create course"}
                   Icon={<ChevronRight size={25} />}
                   disabled={loading || isSubmitting}
                 />
@@ -245,4 +185,4 @@ function CreateLearners({ onLearnersCreated }) {
   );
 }
 
-export default CreateLearners;
+export default CreateCourse;

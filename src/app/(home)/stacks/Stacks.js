@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import stacks from "../../learner/json/stacks.json";
-import "./stacks.css";
+import stacks from "../../components/json/stacks.json";
+import "../../styles/stacks.css";
 
 function Stacks() {
   const [useDefaultClass, setUseDefaultClass] = useState(false);
