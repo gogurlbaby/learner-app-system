@@ -70,9 +70,13 @@ const FormField = ({
             className="absolute right-[0.75rem] text-[#666] pointer-events-none"
           />
         )}
-        {isValid && <Check size={20} className="text-[#77C053]" />}
+        {formType === "admin" && isValid && (
+          <Check size={20} className="text-[#77C053]" />
+        )}
 
-        {isInvalid && <CircleAlert size={20} className="text-[#A61D24]" />}
+        {formType === "admin" && isInvalid && (
+          <CircleAlert size={20} className="text-[#A61D24]" />
+        )}
       </div>
       {errors[name] && touched[name] && (
         <div className="text-red-500 text-base">{errors[name]}</div>

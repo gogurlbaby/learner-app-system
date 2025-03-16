@@ -1,0 +1,5 @@
+[
+  { "value": "paid", "label": "Paid" },
+  { "value": "pending", "label": "Pending" },
+  { "value": "not_paid", "label": "Not Paid" }
+]

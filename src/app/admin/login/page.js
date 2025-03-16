@@ -36,16 +36,17 @@ function Login() {
         },
       });
       const data = await res.json();
-      console.log(data);
+      console.log("Login Response", data);
 
       if (res.ok) {
-        localStorage.setItem("adminUser", JSON.stringify(data));
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("adminUser", JSON.stringify(data.admin));
         router.push("/admin/dashboard");
       } else {
         console.log("Login Failed", data);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error logging in", error);
     }
   };
 

@@ -55,17 +55,17 @@ export function AppSidebar({ setActiveContent }) {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <button
-                      onClick={() => setActiveContent(item.content)}
-                      className="[&>a]:hover:bg-[#E6EFF5] [&>a]:hover:text-[#01589A]"
-                    >
-                      <item.icon className="text-black" />
-                      <span className="text-black text-base font-sans font-normal">
-                        {item.title}
-                      </span>
-                    </button>
-                  </SidebarMenuButton>
+                  {/* <SidebarMenuButton asChild> */}
+                  <button
+                    onClick={() => setActiveContent(item.content)}
+                    className="[&>a]:hover:bg-[#E6EFF5] [&>a]:hover:text-[#01589A] flex gap-2 p-2"
+                  >
+                    <item.icon className="text-white" />
+                    <span className="text-white text-base font-sans font-normal">
+                      {item.title}
+                    </span>
+                  </button>
+                  {/* </SidebarMenuButton> */}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
