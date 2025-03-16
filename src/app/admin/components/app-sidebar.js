@@ -5,9 +5,8 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "../../../components/ui/sidebar";
 import { Users, LayoutDashboard, GraduationCap, FileText } from "lucide-react";
 
 const items = [
