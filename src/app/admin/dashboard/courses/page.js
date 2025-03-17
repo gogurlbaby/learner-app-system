@@ -8,18 +8,18 @@ import {
   Card,
   CardContent,
   CardTitle,
+  CardHeader,
   CardFooter,
 } from "../../../../components/ui/card";
 import Button from "../../../components/button/Button";
-import { CardHeader } from "react-bootstrap";
 
 function Courses() {
   const [showCreateCourse, setShowCreateCourse] = useState(false);
-  const [learners, setLearners] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchCourse();
+    fetchCourses();
   }, []);
 
   // const initialValues = {
@@ -33,23 +33,28 @@ function Courses() {
   //     .required("Search field is required"),
   // });
 
-  const fetchCourse = async () => {
+  const fetchCourses = async () => {
     const apiUrl = "https://tmp-se-project.azurewebsites.net/api/course";
 
     try {
       const res = await fetch(apiUrl);
       const data = await res.json();
-      setInvoices(data);
-      setLoading(false);
+
+      if (res.ok) {
+        setCourses(data);
+      } else {
+        console.log("Error fetching courses:", data.message);
+      }
     } catch (error) {
       console.log("Error fetching course:", error);
+    } finally {
       setLoading(false);
     }
   };
 
-  const handleCourseCreated = () => {
-    setCourse((prevCourse) => [newCourse, ...preCourse]);
-    setLoading(false);
+  const handleCourseCreated = (newCourse) => {
+    setCourses((prevCourses) => [newCourse, ...prevCourses]);
+    setShowCreateCourse(false);
   };
   return (
     <>
@@ -62,8 +67,8 @@ function Courses() {
             <h2 className="text-black font-sans font-semibold font-lg">
               Courses
             </h2>
-            <div className="flex gap-[1.5rem] items-center">
-              <div className="w-full border-b border-[#01589A] relative bg-[#F5F5F5] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
+            <div className="lg:flex lg:gap-[1.5rem] lg:items-center">
+              <div className="w-[70%] border-b border-[#01589A] relative bg-[#F5F5F5] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
                 <Search size={25} className="text-[#01589A]" />
                 <input
                   type="search"
@@ -81,60 +86,76 @@ function Courses() {
                 <Plus size={25} />
               </button>
             </div>
-            <div className="">
-              <Card className="w-[350px] bg-[#F5F5F5] mt-[3rem]">
-                <CardHeader className="flex justify-center items-center">
-                  <img
-                    src="/images/admin/course.svg"
-                    alt=""
-                    className="mb-[2rem]"
-                  />
-                </CardHeader>
-                <CardContent>
-                  <CardTitle className="text-black font-sans font-semibold text-base">
-                    Software Engineer Path
-                  </CardTitle>
-                  <div className="mt-[1.5rem] flex justify-between items-center border-b border-[#E6E6E6]">
-                    <p className="text-black font-sans font-normal text-base">
-                      Price:
-                    </p>{" "}
-                    <span className="text-black font-sans font-semibold text-base">
-                      $380.00
-                    </span>
-                  </div>
 
-                  <div className="mt-[1.5rem] flex justify-between items-center border-b border-[#E6E6E6]">
-                    <p className="text-black font-sans font-normal text-base">
-                      Duration:
-                    </p>{" "}
-                    <span className="text-black font-sans font-semibold text-base">
-                      12 weeks
-                    </span>
-                  </div>
+            {loading ? (
+              <p className="text-center text-[#01589A] mt-5">
+                Loading courses...
+              </p>
+            ) : courses.length === 0 ? (
+              <p className="text-center text-gray-500 mt-5">
+                No courses available.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+                {courses.map((course) => (
+                  <Card key={course._id} className="w-[350px] bg-[#F5F5F5]">
+                    <CardHeader className="flex justify-center items-center">
+                      <img
+                        src={course.uploadImage || "/images/admin/course.svg"}
+                        alt="Course"
+                        className="mb-[2rem] w-full object-cover"
+                      />
+                    </CardHeader>
+                    <CardContent>
+                      <CardTitle className="text-black font-sans font-semibold text-base">
+                        {course.courseTitle}
+                      </CardTitle>
+                      <div className="mt-[1.5rem] flex justify-between items-center border-b border-[#E6E6E6]">
+                        <p className="text-black font-sans font-normal text-base">
+                          Price:
+                        </p>
+                        <span className="text-black font-sans font-semibold text-base">
+                          ${course.price}
+                        </span>
+                      </div>
 
-                  <div className="mt-[1.5rem] flex justify-between items-center border-b border-[#E6E6E6]">
-                    <p className="text-black font-sans font-normal text-base">
-                      Instructor
-                    </p>{" "}
-                    <span className="text-black font-sans font-semibold text-base">
-                      Benjamin
-                    </span>
-                  </div>
+                      <div className="mt-[1.5rem] flex justify-between items-center border-b border-[#E6E6E6]">
+                        <p className="text-black font-sans font-normal text-base">
+                          Duration:
+                        </p>
+                        <span className="text-black font-sans font-semibold text-base">
+                          {course.duration} weeks
+                        </span>
+                      </div>
 
-                  <div className="mt-[1.5rem] flex justify-between items-center">
-                    <p className="text-black font-sans font-normal text-base">
-                      Learner
-                    </p>{" "}
-                    <span className="text-black font-sans font-semibold text-base">
-                      +200
-                    </span>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button Text="View more" Icon={<ChevronRight size={25} />} />
-                </CardFooter>
-              </Card>
-            </div>
+                      <div className="mt-[1.5rem] flex justify-between items-center border-b border-[#E6E6E6]">
+                        <p className="text-black font-sans font-normal text-base">
+                          Instructor:
+                        </p>
+                        <span className="text-black font-sans font-semibold text-base">
+                          {course.instructor}
+                        </span>
+                      </div>
+
+                      <div className="mt-[1.5rem] flex justify-between items-center">
+                        <p className="text-black font-sans font-normal text-base">
+                          Stacks:
+                        </p>
+                        <span className="text-black font-sans font-semibold text-base">
+                          {course.stacks}
+                        </span>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button
+                        Text="View more"
+                        Icon={<ChevronRight size={25} />}
+                      />
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </>
       ) : (

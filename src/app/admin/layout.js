@@ -37,17 +37,15 @@ export default function AdminLayout({ children }) {
     <div>{children}</div>
   ) : (
     <SidebarProvider>
-      <div className="flex h-screen">
-        {/* Sidebar */}
-        <AppSidebar setActiveContent={setActiveContent} />
+      {/* Sidebar */}
+      <AppSidebar setActiveContent={setActiveContent} />
 
-        {/* Main Content */}
-        <div className="flex flex-col flex-grow">
+      {/* Main Content */}
+      <div className="flex flex-col flex-grow">
+        <main className="lg:px-[4rem] lg:w-[82vw] px-[1rem] w-full h-screen overflow-auto">
           <SidebarTrigger className="p-2" />
-          <main className="px-[4rem] w-[62vw] h-screen overflow-auto">
-            {renderContent()}
-          </main>
-        </div>
+          {renderContent()}
+        </main>
       </div>
     </SidebarProvider>
   );

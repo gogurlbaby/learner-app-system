@@ -123,12 +123,12 @@ function CreateInvoice({ onInvoiceCreated }) {
       <div className="absolute right-0 pr-[4rem]">
         <Theme />
       </div>
-      <div className="mt-[3.375rem] ">
+      <div className="mt-[3.375rem]">
         <h2 className="text-[#999] font-sans font-semibold font-lg">
           Invoices | <span className="text-black">Create invoice</span>
         </h2>
 
-        <div>
+        <div className="w-full">
           <CustomForm
             initialValues={initialValues}
             validationSchema={createInvoiceSchema}

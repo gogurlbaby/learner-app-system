@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Theme from "../../components/theme";
-import { Plus, Search, Pencil, Trash2 } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, Check, Clock } from "lucide-react";
 import CreateInvoice from "./CreateInvoice";
 import {
   Table,
@@ -12,10 +12,11 @@ import {
   TableHeader,
   TableRow,
 } from "../../../../components/ui/table";
+import { Card, CardContent } from "../../../../components/ui/card";
 
 function Invoices() {
   const [showCreateInvoice, setShowCreateInvoice] = useState(false);
-  const [invoices, setInvoices] = useState([]);
+  // const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -47,10 +48,40 @@ function Invoices() {
     }
   };
 
-  const handleInvoiceCreated = () => {
-    setInvoices((prevInvoices) => [newInvoice, ...preInvoices]);
-    setLoading(false);
+  const handleInvoiceCreated = (newInvoice) => {
+    setInvoices((prevInvoices) => [newInvoice, ...prevInvoices]);
+    setShowCreateInvoice(false);
   };
+
+  const invoices = [
+    {
+      id: 1,
+      learner: "John Doe",
+      email: "johndoe@example.com",
+      amount: "500",
+      date: "2024-03-01",
+      icon: Check,
+      status: "Paid",
+    },
+    {
+      id: 2,
+      learner: "Jane Smith",
+      email: "janesmith@example.com",
+      amount: "700",
+      date: "2024-02-15",
+      icon: Clock,
+      status: "Pending",
+    },
+    {
+      id: 3,
+      learner: "David Johnson",
+      email: "davidj@example.com",
+      amount: "600",
+      date: "2024-01-20",
+      icon: Check,
+      status: "Paid",
+    },
+  ];
 
   return (
     <>
@@ -63,8 +94,8 @@ function Invoices() {
             <h2 className="text-black font-sans font-semibold font-lg">
               Invoices
             </h2>
-            <div className="flex gap-[1.5rem] items-center">
-              <div className="w-full border-b border-[#01589A] relative bg-[#F5F5F5] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
+            <div className="lg:flex lg:gap-[1.5rem] lg:items-center">
+              <div className="w-[70%] border-b border-[#01589A] relative bg-[#F5F5F5] rounded-[5px] flex items-center gap-[0.5rem] py-[0.5rem] px-[0.75rem] mt-[2rem] mb-[0.5rem]">
                 <Search size={25} className="text-[#01589A]" />
                 <input
                   type="search"
@@ -86,57 +117,68 @@ function Invoices() {
               {loading ? (
                 <p>Loading invoices...</p>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Learners</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="bg-white p-[1.5rem]">
-                    {invoices.length > 0 ? (
-                      invoices.map((invoice) => (
-                        <TableRow key={invoice._id}>
-                          <TableCell>{invoice.selectLearner}</TableCell>
-                          <TableCell>{invoice.email || "N/A"}</TableCell>
-                          <TableCell>${invoice.amount}</TableCell>
-                          <TableCell>
-                            {new Date(invoice.date).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <button
-                              className={`py-[0.5rem] px-[1.5rem] rounded-md ${
-                                invoice.status === "Paid"
-                                  ? "bg-[#77C053] text-white"
-                                  : "bg-[#FFC107] text-black"
-                              }`}
-                            >
-                              {invoice.status}
-                            </button>
-                          </TableCell>
-                          <TableCell className="flex gap-2">
-                            <button className="text-[#77C053]">
-                              <Pencil />
-                            </button>
-                            <button className="text-[#A61D24]">
-                              <Trash2 />
-                            </button>
-                          </TableCell>
+                <Card>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Learner</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead>Date</TableHead>
+                          <TableHead>Status</TableHead>
                         </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan="6" className="text-center">
-                          No invoices found.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                      </TableHeader>
+                      <TableBody className="bg-white p-[1.5rem]">
+                        {invoices.length > 0 ? (
+                          invoices.map((invoice) => (
+                            <TableRow key={invoice.id}>
+                              <TableCell>{invoice.learner}</TableCell>
+                              <TableCell>{invoice.email}</TableCell>
+                              <TableCell>${invoice.amount}</TableCell>
+                              <TableCell>
+                                {new Date(invoice.date).toLocaleDateString()}
+                              </TableCell>
+                              <TableCell>
+                                <button
+                                  className={`flex gap-2 items-center py-[0.5rem] px-[0.8rem] rounded-md ${
+                                    invoice.status === "Paid"
+                                      ? "bg-[#77C053] text-white"
+                                      : "bg-[#E6E6E6] text-black"
+                                  }`}
+                                >
+                                  {invoice.status}
+                                  <invoice.icon
+                                    size={20}
+                                    className={
+                                      invoice.status === "Paid"
+                                        ? "text-white"
+                                        : "text-black"
+                                    }
+                                  />
+                                </button>
+                              </TableCell>
+                              <TableCell className="flex gap-2">
+                                <button className="text-[#77C053] bg-[#EDF7E8] p-[0.5rem]">
+                                  <Pencil />
+                                </button>
+                                <button className="text-[#A61D24] bg-[#F7E9EA] p-[0.5rem]">
+                                  <Trash2 />
+                                </button>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan="6" className="text-center">
+                              No invoices found.
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
               )}
             </div>
           </div>
