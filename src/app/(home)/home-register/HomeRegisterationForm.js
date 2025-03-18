@@ -70,7 +70,13 @@ function HomeRegisterationForm({ email }) {
         "Invalid"
       )
       .required("Kindly choose if you have a disability or not"),
-    contact: Yup.string().required("Your contact is required").length(10),
+    contact: Yup.string()
+      .matches(
+        /^(0[235678][0-9]{8})$/,
+        "Invalid phone number. Must be 10 digits long."
+      )
+      .required("Your contact is required")
+      .length(10),
     uploadImage: Yup.mixed().required("Image is required"),
     // .test(
     //   "fileSize",

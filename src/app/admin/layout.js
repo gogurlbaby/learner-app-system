@@ -13,7 +13,10 @@ import Report from "./dashboard/report/page";
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const isAuthPage =
-    pathname === "/admin/login" || pathname === "/admin/register";
+    pathname === "/admin/login" ||
+    pathname === "/admin/register" ||
+    pathname === "/admin/otp" ||
+    pathname === "/admin/reset-password";
   const [activeContent, setActiveContent] = useState("dashboard");
 
   const renderContent = () => {

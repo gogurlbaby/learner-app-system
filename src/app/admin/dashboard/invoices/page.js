@@ -90,7 +90,7 @@ function Invoices() {
           <div className="absolute right-0 pr-[4rem]">
             <Theme />
           </div>
-          <div className="mt-[3.375rem] ">
+          <div className="mt-[3.375rem]">
             <h2 className="text-black font-sans font-semibold font-lg">
               Invoices
             </h2>
@@ -113,7 +113,7 @@ function Invoices() {
                 <Plus size={25} />
               </button>
             </div>
-            <div className="bg-[#F5F5F5] h-auto p-[1rem] w-full mt-[2rem]">
+            <div className="bg-[#F5F5F5] p-[1rem] w-full mt-[2rem]">
               {loading ? (
                 <p>Loading invoices...</p>
               ) : (

@@ -1,12 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomForm from "../../components/custom-form/CustomForm";
 import Button from "../../components/button/Button";
 import * as Yup from "yup";
 import { ArrowLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useToast } from "../../../hooks/use-toast";
 
 function EmailVerification() {
+  const [otp, setOtp] = useState("");
+  const [loading, SetLoading] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+
   const initialValues = {
     emailVerification: "",
   };
@@ -17,22 +24,69 @@ function EmailVerification() {
       .required("OTP is required"),
   });
 
-  const handleSubmit = async (values) => {
-    const apiUrl =
-      "https://tmp-se-project.azurewebsites.net//api/admin/auth/verify-email";
+  useEffect(() => {
+    const storedOtp = localStorage.getItem("otp");
 
+    if (storedOtp) {
+      setOtp(storedOtp);
+    }
+  }, []);
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    const apiUrl =
+      "https://tmp-se-project.azurewebsites.net/api/admin/auth/verify-email";
+
+    const requestBody = {
+      token: values.emailVerification,
+    };
+
+    console.log("Sending to API:", requestBody);
+
+    SetLoading(true);
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
-        body: JSON.stringify(values),
+        body: JSON.stringify(requestBody),
         headers: {
           "Content-Type": "application/json",
         },
       });
+
       const data = await res.json();
-      console.log(data);
+      console.log("OTP Verification Response", data);
+
+      if (res.ok) {
+        toast({
+          title: data.message,
+          description: "Redirecting to dashboard...",
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
+        localStorage.setItem(
+          "adminUser",
+          JSON.stringify({ email: localStorage.getItem("adminEmail") })
+        );
+        localStorage.removeItem("otp");
+        localStorage.removeItem("adminEmail");
+        router.push("/admin/dashboard");
+      } else {
+        toast({
+          title: "Invalid or expired OTP.",
+          description: data.message || "Please try again.",
+          duration: 3000,
+          variant: "destructive",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Network error.",
+        description: "Something went wrong. Please try again.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
+    } finally {
+      setSubmitting(false);
+      SetLoading(false);
     }
   };
 
@@ -48,6 +102,7 @@ function EmailVerification() {
           <img src="/images/admin/azubi-logo.svg" alt="" className="w-[30%]" />
           <button
             type="button"
+            onClick={() => router.back("")}
             className="mt-[2rem] flex gap-[0.75rem] items-center justify-center py-[0.5rem] px-[1rem] rounded-[5px] bg-transparent border border-solid border-[#F5F5F5] text-base font-semibold font-sans text-white"
           >
             <ArrowLeft size={25} className="text-white" />
@@ -71,6 +126,7 @@ function EmailVerification() {
           <div className="hidden xl:flex xl:justify-start xl:gap-[1.5rem] xl:mb-[1rem]">
             <button
               type="button"
+              onClick={() => router.back("")}
               className="xl:bg-white xl:text-[#01589A] xl:border xl:border-solid xl:border-[#01589A] xl:flex xl:gap-[0.75rem] xl:items-center xl:justify-center xl:py-[0.5rem] xl:px-[1rem] xl:rounded-[5px] xl:font-semibold xl:font-sans"
             >
               <ArrowLeft size={25} className="text-[#01589A]" />
@@ -85,6 +141,12 @@ function EmailVerification() {
             OTP verification
           </h2>
           <div className="xl:border-none xl:rounded-none bg-white rounded-xl p-[0.5rem] border border-solid border-white">
+            {otp && (
+              <p className="text-red-500 text-center text-lg font-semibold">
+                OTP: {otp}
+              </p>
+            )}
+
             <CustomForm
               initialValues={initialValues}
               validationSchema={otpSchema}
@@ -94,7 +156,7 @@ function EmailVerification() {
               submitButton={(isSubmitting) => (
                 <div className="mt-3">
                   <Button
-                    Text="Verify"
+                    Text={loading ? "Verifying..." : "Verify"}
                     type="submit"
                     disabled={isSubmitting}
                     Icon={<ChevronRight size={25} />}

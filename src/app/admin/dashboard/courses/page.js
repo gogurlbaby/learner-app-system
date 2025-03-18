@@ -15,7 +15,7 @@ import Button from "../../../components/button/Button";
 
 function Courses() {
   const [showCreateCourse, setShowCreateCourse] = useState(false);
-  const [courses, setCourses] = useState([]);
+  // const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -56,6 +56,36 @@ function Courses() {
     setCourses((prevCourses) => [newCourse, ...prevCourses]);
     setShowCreateCourse(false);
   };
+
+  const courses = [
+    {
+      id: 1,
+      imageUrl: "/images/admin/course1.svg",
+      courseTitle: "Software Engineering Path",
+      duration: "12 weeks",
+      instructor: "Benjamin",
+      amount: "380.00",
+      learners: +200,
+    },
+    {
+      id: 2,
+      imageUrl: "/images/admin/course2.svg",
+      courseTitle: "Cloud Computing Expertise",
+      duration: "12 weeks",
+      instructor: "Williams",
+      amount: "380.00",
+      learners: +200,
+    },
+    {
+      id: 3,
+      imageUrl: "/images/admin/course3.svg",
+      courseTitle: "Data Science Mastery",
+      duration: "12 weeks",
+      instructor: "Enoch",
+      amount: "380.00",
+      learners: +200,
+    },
+  ];
   return (
     <>
       {!showCreateCourse ? (
@@ -98,10 +128,10 @@ function Courses() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
                 {courses.map((course) => (
-                  <Card key={course._id} className="w-[350px] bg-[#F5F5F5]">
+                  <Card key={course.id} className="w-[350px] bg-white">
                     <CardHeader className="flex justify-center items-center">
                       <img
-                        src={course.uploadImage || "/images/admin/course.svg"}
+                        src={course.imageUrl}
                         alt="Course"
                         className="mb-[2rem] w-full object-cover"
                       />
@@ -115,7 +145,7 @@ function Courses() {
                           Price:
                         </p>
                         <span className="text-black font-sans font-semibold text-base">
-                          ${course.price}
+                          ${course.amount}
                         </span>
                       </div>
 
@@ -124,7 +154,7 @@ function Courses() {
                           Duration:
                         </p>
                         <span className="text-black font-sans font-semibold text-base">
-                          {course.duration} weeks
+                          {course.duration}
                         </span>
                       </div>
 
@@ -136,21 +166,14 @@ function Courses() {
                           {course.instructor}
                         </span>
                       </div>
-
-                      <div className="mt-[1.5rem] flex justify-between items-center">
-                        <p className="text-black font-sans font-normal text-base">
-                          Stacks:
-                        </p>
-                        <span className="text-black font-sans font-semibold text-base">
-                          {course.stacks}
-                        </span>
-                      </div>
                     </CardContent>
                     <CardFooter className="flex justify-between">
-                      <Button
-                        Text="View more"
-                        Icon={<ChevronRight size={25} />}
-                      />
+                      <div className="mt-[1.5rem]">
+                        <Button
+                          Text="View more"
+                          Icon={<ChevronRight size={25} />}
+                        />
+                      </div>
                     </CardFooter>
                   </Card>
                 ))}

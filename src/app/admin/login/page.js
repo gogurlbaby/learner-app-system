@@ -1,14 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import CustomForm from "../../components/custom-form/CustomForm";
 import GreyButton from "../../components/button/GreyButton";
 import * as Yup from "yup";
 import { Mail, LockKeyhole, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useToast } from "../../../hooks/use-toast";
 
 function Login() {
+  const [loading, SetLoading] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
+
   const initialValues = {
     email: "",
     password: "",
@@ -23,10 +27,11 @@ function Login() {
       .required("Password is required"),
   });
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
       "https://tmp-se-project.azurewebsites.net//api/admin/auth/login";
 
+    SetLoading(true);
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -39,14 +44,33 @@ function Login() {
       console.log("Login Response", data);
 
       if (res.ok) {
-        localStorage.setItem("authToken", data.token);
-        localStorage.setItem("adminUser", JSON.stringify(data.admin));
+        toast({
+          title: data.message,
+          description: "",
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
+
+        localStorage.setItem("adminUser", JSON.stringify(data.Admin));
         router.push("/admin/dashboard");
       } else {
-        console.log("Login Failed", data);
+        toast({
+          title: "Error",
+          description: data.message || "Invalid credentials",
+          duration: 3000,
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      console.log("Error logging in", error);
+      toast({
+        title: "Network error.",
+        description: "Please try again later.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
+    } finally {
+      setSubmitting(false);
+      SetLoading(false);
     }
   };
 
@@ -69,6 +93,7 @@ function Login() {
           <img src="/images/admin/azubi-logo.svg" alt="" className="w-[30%]" />
           <button
             type="button"
+            onClick={() => router.push("/admin/register")}
             className="flex gap-[0.75rem] items-center justify-center py-[0.5rem] px-[1rem] rounded-[5px] bg-[#F5F5F5] border border-solid border-[#F5F5F5] text-base font-semibold font-sans text-[#01589A]"
           >
             Sign up
@@ -96,6 +121,7 @@ function Login() {
             </p>
             <button
               type="button"
+              onClick={() => router.push("/admin/register")}
               className="xl:bg-[#01589A] xl:text-white xl:border-[#01589A] xl:flex xl:gap-[0.75rem] xl:items-center xl:justify-center xl:py-[0.5rem] xl:px-[1rem] xl:rounded-[5px] xl:font-semibold xl:font-sans"
             >
               Sign up
@@ -115,13 +141,16 @@ function Login() {
               submitButton={(isSubmitting) => (
                 <>
                   <div>
-                    <a className="no-underline text-[#177ddc] text-base font-normal font-sans cursor-pointer">
+                    <a
+                      href="/admin/reset-password"
+                      className="no-underline text-[#177ddc] text-base font-normal font-sans cursor-pointer"
+                    >
                       Forgot password?
                     </a>
                   </div>
                   <div className="mt-3">
                     <GreyButton
-                      Text="Login"
+                      Text={loading ? "Loggin in..." : "Login"}
                       type="submit"
                       disabled={isSubmitting}
                       Icon={<ChevronRight size={25} />}

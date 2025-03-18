@@ -15,6 +15,7 @@ import {
   Settings,
   Power,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const items = [
   {
@@ -65,14 +66,28 @@ const bottomItems = [
 ];
 
 export function AppSidebar({ setActiveContent }) {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminUser");
+    router.push("/admin/login");
+  };
+
   return (
     <Sidebar className="[&>div]:!bg-[#01589A]">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel></SidebarGroupLabel>
           <SidebarGroupContent>
-            <div className="md:bg-[#fff] bg-[#000] py-[2rem] px-[4rem] rounded-md mt-2 mb-[2.313rem]">
+            <div className="hidden md:block bg-[#fff] py-[2rem] px-[4rem] rounded-md mt-2 mb-[2.313rem]">
               <img src="/images/azubi-logo.svg" alt="" />
+            </div>
+            <div className="flex justify-center items-center md:hidden bg-[#01589A] py-[2rem] px-[4rem] rounded-md mt-2 mb-[2.313rem]">
+              <img
+                src="/images/azubi-footer-logo.svg"
+                alt=""
+                className="w-20"
+              />
             </div>
             <SidebarMenu>
               {items.map((item) => (
@@ -80,9 +95,9 @@ export function AppSidebar({ setActiveContent }) {
                   {/* <SidebarMenuButton asChild> */}
                   <button
                     onClick={() => setActiveContent(item.content)}
-                    className="[&>a]:hover:bg-[#E6EFF5] [&>a]:hover:text-[#01589A] flex gap-2 p-2"
+                    className="md:[&>a]:hover:bg-[#E6EFF5] [&>a]:hover:text-[#01589A] text-[#01589A] flex gap-2 p-2"
                   >
-                    <item.icon className="md:text-white" />
+                    <item.icon className="md:text-white text-[#01589A]" />
                     <span className="md:text-white text-base font-sans font-normal">
                       {item.title}
                     </span>
@@ -98,15 +113,27 @@ export function AppSidebar({ setActiveContent }) {
           <SidebarMenu>
             {bottomItems.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <button
-                  onClick={() => setActiveContent(item.content)}
-                  className="[&>a]:hover:bg-[#E6EFF5] [&>a]:hover:text-[#01589A] flex gap-2 p-2"
-                >
-                  <item.icon className="md:text-white" />
-                  <span className="md:text-white text-base font-sans font-normal">
-                    {item.title}
-                  </span>
-                </button>
+                {item.content === "logout" ? (
+                  <button
+                    onClick={handleLogout}
+                    className="md:[&>a]:hover:bg-[#E6EFF5] [&>a]:hover:text-[#01589A] text-[#01589A] flex gap-2 p-2"
+                  >
+                    <item.icon className="md:text-white text-[#01589A] " />
+                    <span className="md:text-white text-base font-sans font-normal">
+                      {item.title}
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setActiveContent(item.content)}
+                    className="[&>a]:hover:bg-[#E6EFF5] [&>a]:hover:text-[#01589A] flex gap-2 p-2"
+                  >
+                    <item.icon className="md:text-white" />
+                    <span className="md:text-white text-base font-sans font-normal">
+                      {item.title}
+                    </span>
+                  </button>
+                )}
               </SidebarMenuItem>
             ))}
           </SidebarMenu>

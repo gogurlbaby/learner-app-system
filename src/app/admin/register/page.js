@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import CustomForm from "../../components/custom-form/CustomForm";
 import GreyButton from "../../components/button/GreyButton";
 import * as Yup from "yup";
@@ -11,8 +11,14 @@ import {
   Phone,
   ChevronRight,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useToast } from "../../../hooks/use-toast";
 
 function Register() {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+
   const initialValues = {
     first_name: "",
     last_name: "",
@@ -34,13 +40,19 @@ function Register() {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password is required"),
-    contact: Yup.string().required("Contact is required"),
+    contact: Yup.string()
+      .matches(
+        /^(0[235678][0-9]{8})$/,
+        "Invalid phone number. Must be 10 digits long."
+      )
+      .required("Contact is required"),
   });
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
-      "https://tmp-se-project.azurewebsites.net//api/admin/auth/signup";
+      "https://tmp-se-project.azurewebsites.net/api/admin/auth/signup";
 
+    setLoading(true);
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -50,9 +62,36 @@ function Register() {
         },
       });
       const data = await res.json();
-      console.log(data);
+      console.log("Registration Response", data);
+
+      if (res.ok) {
+        toast({
+          title: "Registration Succesful",
+          description: data.message,
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
+        localStorage.setItem("otp", data.Admin.verificationToken);
+        localStorage.setItem("adminEmail", data.Admin.email);
+        router.push("/admin/otp");
+      } else {
+        toast({
+          title: "Error",
+          description: data.message || "Registration Failed.",
+          duration: 3000,
+          variant: "destructive",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Network error.",
+        description: "Please try again later.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
+    } finally {
+      setSubmitting(false);
+      setLoading(false);
     }
   };
 
@@ -113,6 +152,7 @@ function Register() {
           <img src="/images/admin/azubi-logo.svg" alt="" className="w-[30%]" />
           <button
             type="button"
+            onClick={() => router.push("/admin/login/")}
             className="flex gap-[0.75rem] items-center justify-center py-[0.5rem] px-[1rem] rounded-[5px] bg-[#F5F5F5] border border-solid border-[#F5F5F5] text-base font-semibold font-sans text-[#01589A]"
           >
             Login
@@ -140,6 +180,7 @@ function Register() {
             </p>
             <button
               type="button"
+              onClick={() => router.push("/admin/login/")}
               className="xl:bg-[#01589A] xl:text-white xl:border-[#01589A] xl:flex xl:gap-[0.75rem] xl:items-center xl:justify-center xl:py-[0.5rem] xl:px-[1rem] xl:rounded-[5px] xl:font-semibold xl:font-sans"
             >
               Login
@@ -159,7 +200,7 @@ function Register() {
               submitButton={(isSubmitting) => (
                 <div className="mt-3">
                   <GreyButton
-                    Text="Create account"
+                    Text={loading ? "Creating account..." : "Create account"}
                     type="submit"
                     disabled={isSubmitting}
                     Icon={<ChevronRight size={25} />}

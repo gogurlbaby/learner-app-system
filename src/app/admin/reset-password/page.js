@@ -1,12 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import CustomForm from "../../components/custom-form/CustomForm";
 import Button from "../../components/button/Button";
 import * as Yup from "yup";
 import { Mail, ArrowLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useToast } from "../../../hooks/use-toast";
 
 function AdminResetPassword() {
+  const [loading, SetLoading] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+
   const initialValues = {
     email: "",
   };
@@ -17,10 +23,11 @@ function AdminResetPassword() {
       .required("Email Address is required"),
   });
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
       "https://tmp-se-project.azurewebsites.net//api/admin/auth/forgot-password";
 
+    SetLoading(true);
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -31,8 +38,32 @@ function AdminResetPassword() {
       });
       const data = await res.json();
       console.log(data);
+
+      if (res.ok) {
+        toast({
+          title: "Success",
+          description: "Your password has been reset successfully!",
+          duration: 3000,
+          className: "bg-emerald-700 text-white",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: data.message || "Failed to reset password. Try again.",
+          duration: 3000,
+          variant: "destructive",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Network error.",
+        description: "Something went wrong. Please try again later.",
+        duration: 3000,
+        className: "bg-yellow-500 text-white",
+      });
+    } finally {
+      setSubmitting(false);
+      SetLoading(false);
     }
   };
 
@@ -48,6 +79,7 @@ function AdminResetPassword() {
           <img src="/images/admin/azubi-logo.svg" alt="" className="w-[30%]" />
           <button
             type="button"
+            onClick={() => router.back("")}
             className="mt-[2rem] flex gap-[0.75rem] items-center justify-center py-[0.5rem] px-[1rem] rounded-[5px] bg-transparent border border-solid border-[#F5F5F5] text-base font-semibold font-sans text-white"
           >
             <ArrowLeft size={25} className="text-white" />
@@ -71,6 +103,7 @@ function AdminResetPassword() {
           <div className="hidden xl:block xl:mb-[1rem]">
             <button
               type="button"
+              onClick={() => router.back("")}
               className="xl:bg-white xl:text-[#01589A] xl:border xl:border-solid xl:border-[#01589A] xl:flex xl:gap-[0.75rem] xl:items-center xl:justify-center xl:py-[0.5rem] xl:px-[1rem] xl:rounded-[5px] xl:font-semibold xl:font-sans"
             >
               <ArrowLeft size={25} className="text-[#01589A]" />
@@ -90,7 +123,7 @@ function AdminResetPassword() {
               submitButton={(isSubmitting) => (
                 <div className="mt-3">
                   <Button
-                    Text="Reset password"
+                    Text={loading ? "Resetting..." : "Reset password"}
                     type="submit"
                     disabled={isSubmitting}
                     Icon={<ChevronRight size={25} />}

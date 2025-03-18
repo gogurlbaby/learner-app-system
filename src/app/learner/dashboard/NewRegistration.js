@@ -91,7 +91,13 @@ function NewRegistration({ onComplete }) {
         "Invalid"
       )
       .required("Kindly choose if you have a disability or not"),
-    phone: Yup.string().required("Your phone number is required").length(10),
+    phone: Yup.string()
+      .matches(
+        /^(0[235678][0-9]{8})$/,
+        "Invalid phone number. Must be 10 digits long."
+      )
+      .required("Your phone number is required")
+      .length(10),
     uploadImage: Yup.mixed().required("Image is required"),
     // .test(
     //   "fileSize",
