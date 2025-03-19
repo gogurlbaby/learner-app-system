@@ -150,7 +150,7 @@ function Login() {
                   </div>
                   <div className="mt-3">
                     <GreyButton
-                      Text={loading ? "Loggin in..." : "Login"}
+                      Text={loading ? "Logging in..." : "Login"}
                       type="submit"
                       disabled={isSubmitting}
                       Icon={<ChevronRight size={25} />}

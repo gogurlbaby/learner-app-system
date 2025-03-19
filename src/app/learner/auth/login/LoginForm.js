@@ -106,7 +106,7 @@ function Login({ handleLogin }) {
         submitButton={(isSubmitting) => (
           <Button
             type="submit"
-            Text={loading ? "Loggin in..." : "Login"}
+            Text={loading ? "Logging in..." : "Login"}
             Icon={<ChevronRight size={25} />}
             disabled={isSubmitting}
           />
