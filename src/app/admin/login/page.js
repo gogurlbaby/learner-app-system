@@ -29,7 +29,7 @@ function Login() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const apiUrl =
-      "https://tmp-se-project.azurewebsites.net//api/admin/auth/login";
+      "https://cors-anywhere.herokuapp.com/https://tmp-se-project.azurewebsites.net/api/admin/auth/login";
 
     SetLoading(true);
     try {
